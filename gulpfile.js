@@ -17,6 +17,8 @@ const notify = require('gulp-notify');
 const babel = require('gulp-babel');
 const webpack = require('gulp-webpack');
 const gcmq = require('gulp-group-css-media-queries');
+const app = require('./server/app')
+
 // require('babel-register');
 
 gulp.task('styles', function() {
@@ -85,6 +87,7 @@ gulp.task('serve', function () {
   });
 
   browserSync.watch('build/**/*.*').on('change', browserSync.reload);
+  // app.listen;
 });
 
 gulp.task('dev',

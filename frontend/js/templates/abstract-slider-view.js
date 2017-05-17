@@ -3,7 +3,7 @@ import AbstractView from './abstract-view';
 
 export default class AbstractSliderView extends AbstractView {
 
-  constructor(data, i) {
+  constructor(data) {
     super();
     this.data = data;
     this.sliderBox = document.createElement('div');
@@ -11,7 +11,7 @@ export default class AbstractSliderView extends AbstractView {
     this.arrowLeft = document.createElement('a');
     this.images = this.element.querySelectorAll('li');
 
-    this.i = i;
+    this.i = 0;
     this.images[this.i].classList.add('animate');
 
   }

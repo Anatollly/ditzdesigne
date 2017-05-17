@@ -16,10 +16,3 @@ document.querySelector('.row-2 .row__image').appendChild(imageView(imageData.row
 document.querySelector('.row-3 .row__image').appendChild(imageView(imageData.row3));
 document.querySelector('.row-4 .row__image').appendChild(albumView(galleryData.album1));
 document.querySelector('.row-4 .screenImage').appendChild(screenSliderView(galleryData.album1));
-
-
-// let re = /\//;
-let str = 'http://localhost:3501/img/slider-img-5.png';
-let newstr = str.split('/')[4];
-console.log(newstr);
-console.log(str);

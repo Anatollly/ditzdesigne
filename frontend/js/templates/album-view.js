@@ -17,7 +17,7 @@ class AlbumView extends ImageView {
           if (img === e.target.src.split('/')[4]) {
             console.log(i);
           }
-        })
+        });
       }
     });
   }

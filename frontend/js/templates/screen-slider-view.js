@@ -2,8 +2,8 @@ import AbstractSliderView from './abstract-slider-view';
 
 class ScreenSliderView extends AbstractSliderView {
 
-  constructor(data, i) {
-    super(data, i);
+  constructor(data) {
+    super(data);
     this.screenImage = document.querySelector('.screenImage');
   }
 
@@ -25,4 +25,4 @@ class ScreenSliderView extends AbstractSliderView {
   }
 }
 
-export default (data, i) => new ScreenSliderView(data, i).element;
+export default (data, i) => new ScreenSliderView(data).element;
