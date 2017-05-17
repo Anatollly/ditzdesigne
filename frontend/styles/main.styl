@@ -1,0 +1,330 @@
+@import './smart-grid'
+
+width-content()
+  max-width: 1000px
+  margin: 0 auto;
+  overflow: hidden;
+
+row-space()
+  margin-top: 20px
+  padding-bottom: 20px
+  border-bottom: 1px dashed black
+
+row-flex-space-between()
+  row-flex()
+  justify-content: space-between;
+
+reset()
+
+body
+  font-family: "Segoe Script";
+  font-weight: bold
+  width: 100%
+  font-size: 22px
+  background: url(/img/pic-3.png) repeat
+  background-color: white
+
+
+.header
+  width-content()
+  background-color: white
+
+  .logos
+    row-flex-space-between()
+    margin: 10px 0px
+    sm(justify-content, center)
+
+    .logo
+
+      &_main
+      &_icons
+        flex-basis: 287px
+        height: 50px
+
+      &_main
+        background: url(/img/logoDitz.png) 50% 50% no-repeat
+        background-size: 100% auto
+        cursor: pointer;
+        @media screen and (max-width: 600px)
+          margin: 10px
+          flex-basis: 400px
+          height: 80px
+
+      &_icons
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: space-between;
+
+          li
+            flex-basis: 50px
+            height: 50px
+            cursor: pointer;
+
+          #vk
+            background: url(/img/ikonkisozseti.png) 0px 0px no-repeat
+            background-size: 340%
+
+          #ig
+            background: url(/img/ikonkisozseti.png) -60px 0px no-repeat
+            background-size: 340% auto
+
+          #fb
+            background: url(/img/ikonkisozseti.png) -120px 0px no-repeat
+            background-size: 340% auto
+
+
+  .main-menu
+    min-height: 50px
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    align-items: center
+    border-top: 1px dashed black
+    border-bottom: 1px dashed black
+    sm(display, none)
+    md(justify-content, space-around)
+
+    li
+      cursor: pointer;
+      md(margin, 0 40px)
+
+.content
+  width-content()
+  background-color: white
+
+  .row
+    row-space()
+
+    .row__content
+      row-flex-space-between()
+
+      .slider
+        col();
+        col-8();
+        col-sm-12();
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+
+        &__imgSize
+          display: block;
+
+        ul
+
+          li
+            display: block;
+            opacity: 0
+            transition: opacity 1s;
+
+            &.animate
+              opacity: 1
+
+            img
+              display: block;
+              position: absolute;
+              margin: auto;
+              left: 0;
+              top: 0;
+              bottom: 0;
+              right: 0;
+
+        .arrow-right
+        .arrow-left
+          display: none
+          width: 50px
+          height: 25px
+          position: absolute;
+          z-index: 1
+          top: 50%
+          margin-top: -12px
+          background: url(/img/arrows.png) no-repeat
+          background-size: 300% auto
+          sm(display, block)
+          cursor: pointer;
+          border-radius: 8px
+          &:hover
+            background-color: grey
+            opacity: .7
+
+        .arrow-right
+          right: 0
+          background-position: 0px -13px
+
+
+        .arrow-left
+          left: 0
+          background-position: -100px -13px
+
+        &:hover .arrow-right
+        &:hover .arrow-left
+          display: block;
+
+      .rightPictures
+        col();
+        col-4();
+        sm(display, none)
+        row-flex-space-between()
+        flex-direction: column;
+
+        li
+          cursor: pointer;
+
+          img
+            display: block
+
+    &__caption
+      row-flex-space-between()
+      align-items: center
+      flex-wrap: nowrap;
+
+      div
+        col()
+        flex-basis: 300px
+
+        &:last-child
+          xs(flex-basis, 250px)
+
+    &__image
+      ul
+        row-flex-space-between()
+        align-items: center
+
+        li
+          col()
+          col-3()
+          col-sm-6()
+          margin-top: 10px
+
+          img
+            display: block;
+
+      &-threeImg li
+        &:nth-child(2)
+          col-6()
+          col-sm-12()
+          sm(order, -1)
+
+      &-album ul
+          justify-content: flex-start;
+
+.screenImage
+  display: none;
+  position: fixed;
+  top: 0
+  right: 0
+  width: 100%
+  height: 100%
+  z-index: 100
+  background: url(/img/fancybox_overlay.png);
+
+  .slider
+    display: block;
+    position: relative;
+    width: 600px;
+    height: 100%;
+    sm(width, 100%);
+    margin: auto;
+
+    ul
+
+      li
+        display: block;
+        opacity: 0
+        transition: opacity 1s;
+
+        &.animate
+          opacity: 1
+
+        img
+          display: block;
+          position: absolute;
+          margin: auto;
+          left: 0;
+          top: 0;
+          bottom: 0
+          right: 0;
+
+    &__arrowRight
+    &__arrowLeft
+      display: none
+      width: 50px
+      height: 25px
+      position: absolute;
+      z-index: 1
+      top: 50%
+      margin-top: -12px
+      background: url(/img/arrows.png) no-repeat
+      background-size: 300% auto
+      sm(display, block)
+      cursor: pointer;
+      border-radius: 8px
+      &:hover
+        background-color: grey
+        opacity: .7
+
+    &__arrowRight
+      right: 0
+      background-position: 0px -13px
+
+
+    &__arrowLeft
+      left: 0
+      background-position: -100px -13px
+
+    &:hover .slider__arrowRight
+    &:hover .slider__arrowLeft
+      display: block;
+
+    &__closeImage
+      cursor: pointer;
+      position: absolute;
+      left: 50%;
+      margin-left: -17px;
+      bottom: 20px
+      width: 34px
+      height: 34px
+      background: url(/img/fancybox_sprite.png) no-repeat
+      // background-size: auto
+      // background-position: 0px 0px
+      z-index: 1
+
+.visible
+  display: block
+
+.footer
+  width-content()
+  background-color: white
+
+  .wrap-footer
+    row-flex-space-between()
+    md(justify-content, space-around)
+    margin: 30px 0
+    font-size: 19px
+
+    .copy
+      font-family: "Arial";
+
+    div
+      col()
+      flex-basis: 387px
+      line-height: 1
+
+      .min-font
+        font-size: 10px
+
+    .contact
+      display: flex;
+      md(margin-top, 20px )
+
+      .address
+        line-height: 1.5
+
+      .footer-img
+        max-width: 70px
+        xs(display, none)
+
+
+        img
+          display: block
+          position: relative;
+          right: 0
