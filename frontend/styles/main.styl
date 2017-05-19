@@ -98,67 +98,6 @@ body
     .row__content
       row-flex-space-between()
 
-      .slider
-        col();
-        col-8();
-        col-sm-12();
-        position: relative;
-        cursor: pointer;
-        overflow: hidden;
-
-        &__imgSize
-          display: block;
-
-        ul
-
-          li
-            display: block;
-            opacity: 0
-            transition: opacity 1s;
-
-            &.animate
-              opacity: 1
-
-            img
-              display: block;
-              position: absolute;
-              margin: auto;
-              left: 0;
-              top: 0;
-              bottom: 0;
-              right: 0;
-
-        &__arrowRight
-        &__arrowLeft
-          display: none
-          width: 50px
-          height: 25px
-          position: absolute;
-          z-index: 1
-          top: 50%
-          margin-top: -12px
-          background: url(/img/arrows.png) no-repeat
-          background-size: 300% auto
-          sm(display, block)
-          cursor: pointer;
-          border-radius: 8px
-          &:hover
-            background-color: grey
-            opacity: .7
-
-        &__arrowRight
-          right: 0
-          background-position: 0px -13px
-
-
-        &__arrowLeft
-          left: 0
-          background-position: -100px -13px
-
-        &:hover .slider__arrowRight
-        &:hover .slider__arrowLeft
-          display: block;
-
       .rightPictures
         col();
         col-4();
@@ -217,76 +156,90 @@ body
   z-index: 100
   background: url(/img/fancybox_overlay.png);
 
-  .slider
-    display: block;
+.slider
+  display: block;
+  position: relative;
+  overflow: hidden;
+
+
+  &-onLeft
+    col();
+    col-8();
+    col-sm-12();
     position: relative;
+    cursor: pointer;
+
+  &-fullScreen
     width: 600px;
     height: 100%;
     sm(width, 100%);
     margin: auto;
 
-    ul
+  &__imgSize
+    display: block;
 
-      li
-        display: block;
-        opacity: 0
-        transition: opacity 1s;
+  ul
 
-        &.animate
-          opacity: 1
-
-        img
-          display: block;
-          position: absolute;
-          margin: auto;
-          left: 0;
-          top: 0;
-          bottom: 0
-          right: 0;
-
-    &__arrowRight
-    &__arrowLeft
-      display: none
-      width: 50px
-      height: 25px
-      position: absolute;
-      z-index: 1
-      top: 50%
-      margin-top: -12px
-      background: url(/img/arrows.png) no-repeat
-      background-size: 300% auto
-      sm(display, block)
-      cursor: pointer;
-      border-radius: 8px
-      &:hover
-        background-color: grey
-        opacity: .7
-
-    &__arrowRight
-      right: 0
-      background-position: 0px -13px
-
-
-    &__arrowLeft
-      left: 0
-      background-position: -100px -13px
-
-    &:hover .slider__arrowRight
-    &:hover .slider__arrowLeft
+    li
       display: block;
+      opacity: 0
+      transition: opacity 1s;
 
-    &__closeImage
-      cursor: pointer;
-      position: absolute;
-      left: 50%;
-      margin-left: -17px;
-      bottom: 20px
-      width: 34px
-      height: 34px
-      background: url(/img/fancybox_sprite.png) no-repeat
-      // background-size: auto
-      // background-position: 0px 0px
-      z-index: 1
+      &.animate
+        opacity: 1
+
+      img
+        display: block;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        top: 0;
+        bottom: 0
+        right: 0;
+
+  &__arrowRight
+  &__arrowLeft
+    display: none
+    width: 50px
+    height: 25px
+    position: absolute;
+    z-index: 1
+    top: 50%
+    margin-top: -12px
+    background: url(/img/arrows.png) no-repeat
+    background-size: 300% auto
+    sm(display, block)
+    cursor: pointer;
+    border-radius: 8px
+    &:hover
+      background-color: grey
+      opacity: .7
+
+  &__arrowRight
+    right: 0
+    background-position: 0px -13px
+
+
+  &__arrowLeft
+    left: 0
+    background-position: -100px -13px
+
+  &:hover .slider__arrowRight
+  &:hover .slider__arrowLeft
+    display: block;
+
+  &__closeImage
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    margin-left: -17px;
+    bottom: 20px
+    width: 34px
+    height: 34px
+    background: url(/img/fancybox_sprite.png) no-repeat
+    // background-size: auto
+    // background-position: 0px 0px
+    z-index: 1
 
 .visible
   display: block
