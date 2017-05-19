@@ -1,10 +1,11 @@
-export const getImageS = (data) => {
+export const getImageS = (data, name = '') => {
   const ulImage = document.createElement('ul');
   data.forEach((img, i) => {
     let liImage = document.createElement('li');
     ulImage.appendChild(liImage);
     let image = new Image();
     image.onload = () => {
+      liImage.innerHTML = name[i] || '';
       liImage.appendChild(image);
     };
     image.onerror = () => {
@@ -20,4 +21,11 @@ export const getElementFromTemplate = (nodeElement) => {
   let trimElement = nodeElement.trim();
   node.innerHTML = trimElement;
   return node;
+};
+
+
+export const displayElement = (element) => {
+  const mainElement = document.querySelector('screenImage');
+  mainElement.innerHTML = '';
+  mainElement.appendChild(element);
 };
