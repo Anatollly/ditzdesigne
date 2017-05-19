@@ -12,8 +12,11 @@ export default class AbstractSliderView extends AbstractView {
     this.images = this.element.querySelectorAll('li');
 
     this.i = 0;
-    this.images[this.i].classList.add('animate');
+  }
 
+  setImgOnClick(i) {
+    this.images[i].classList.add('animate');
+    this.i = i;
   }
 
   getMarkup() {

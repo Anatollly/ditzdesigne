@@ -1,6 +1,6 @@
 import AbstractSliderView from './abstract-slider-view';
 
-class ScreenSliderView extends AbstractSliderView {
+export default class ScreenSliderView extends AbstractSliderView {
 
   constructor(data) {
     super(data);
@@ -21,8 +21,7 @@ class ScreenSliderView extends AbstractSliderView {
     const closeImage = this.element.querySelector('.slider__closeImage');
     closeImage.addEventListener('click', () => {
       this.screenImage.classList.remove('visible');
+      this.images[this.i].classList.remove('animate');
     });
   }
 }
-
-export default (data, i) => new ScreenSliderView(data).element;

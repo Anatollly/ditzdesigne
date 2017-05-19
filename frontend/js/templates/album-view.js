@@ -1,23 +1,24 @@
 import {ImageView} from './image-view';
+import ScreenSliderView from './screen-slider-view';
 
 class AlbumView extends ImageView {
   constructor(data) {
     super(data);
     this.data = data;
     this.screenImage = document.querySelector('.screenImage');
+    this.Slider = new ScreenSliderView(this.data);
+    this.screenImage.appendChild(this.Slider.element);
   }
 
   bindHandlers() {
     this.element.addEventListener('click', (e) => {
-      console.log(e.target.src);
       if (e.target.src) {
-        this.screenImage.classList.add('visible');
-        console.log(e.target.src.split('/')[4]);
         this.data.forEach((img, i) => {
           if (img === e.target.src.split('/')[4]) {
-            console.log(i);
+            this.Slider.setImgOnClick(i);
           }
         });
+        this.screenImage.classList.add('visible');
       }
     });
   }
