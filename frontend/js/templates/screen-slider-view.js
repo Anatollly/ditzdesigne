@@ -5,12 +5,12 @@ export default class ScreenSliderView extends AbstractSliderView {
   constructor(data) {
     super(data);
     this.screenImage = document.querySelector('.screenImage');
+    this.closeImage = document.createElement('a');
   }
 
   getAddElement() {
-    const closeImage = document.createElement('a');
-    closeImage.classList.add('slider__closeImage');
-    return closeImage;
+    this.closeImage.classList.add('slider__closeImage');
+    return this.closeImage;
   }
 
   setAddClass() {
@@ -18,10 +18,11 @@ export default class ScreenSliderView extends AbstractSliderView {
   }
 
   bindAddHandlers() {
-    const closeImage = this.element.querySelector('.slider__closeImage');
-    closeImage.addEventListener('click', () => {
+    this.closeImage.addEventListener('click', () => {
       this.screenImage.classList.remove('visible');
       this.images[this.i].classList.remove('animate');
+      this.arrowRight.removeEventListener('click', this.showNextImage.bind(this));
+      this.arrowLeft.removeEventListener('click', this.showPrevImage.bind(this));
     });
   }
 }

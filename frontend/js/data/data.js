@@ -49,5 +49,9 @@ export const galleryData = {
   album4: {
     name: 'album four',
     content: ['img-16.jpg', 'img-6.jpg', 'img-9.jpg', 'img-15.jpg', 'img-17.jpg']
+  },
+  album5: {
+    name: 'top album',
+    content: ['img-14.jpg', 'img-20.jpg', 'img-8.jpg', 'img-21.jpg', 'img-22.jpg', 'img-23.jpg', 'img-26.jpg', 'img-25.jpg', 'img-24.jpg']
   }
 };

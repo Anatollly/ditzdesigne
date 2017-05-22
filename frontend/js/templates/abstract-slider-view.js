@@ -9,9 +9,15 @@ export default class AbstractSliderView extends AbstractView {
     this.sliderBox = document.createElement('div');
     this.arrowRight = document.createElement('a');
     this.arrowLeft = document.createElement('a');
-    this.images = this.element.querySelectorAll('li');
 
     this.i = 0;
+  }
+
+  get images() {
+    if (!this._images) {
+      this._images = this.element.querySelectorAll('li');
+    }
+    return this._images;
   }
 
   setImgOnClick(i) {
@@ -57,13 +63,8 @@ export default class AbstractSliderView extends AbstractView {
   }
 
   bindHandlers() {
-    this.arrowRight.addEventListener('click', () => {
-      this.showNextImage();
-    });
-
-    this.arrowLeft.addEventListener('click', () => {
-      this.showPrevImage();
-    });
+    this.arrowRight.addEventListener('click', this.showNextImage.bind(this));
+    this.arrowLeft.addEventListener('click', this.showPrevImage.bind(this));
 
     this.bindAddHandlers();
   }

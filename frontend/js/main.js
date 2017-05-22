@@ -27,3 +27,63 @@ backButton.addEventListener('click', () => {
   screenImage.innerHTML = '';
   albumBox.appendChild(allAlbumsView(galleryData));
 });
+
+
+// class Zero {
+//
+//   constructor(name) {
+//     console.log('Zero-constructor-start');
+//     this.name = name;
+//     console.log('Zero-constructor-end');
+//   }
+//
+//   getLog() {
+//     console.log('Zero-getLog-start');
+//     console.log('my name ' + this.name);
+//     console.log(this.getAddLog());
+//     console.log('Zero-getLog-end');
+//   }
+//
+//   // getAddLog() {
+//   //
+//   // }
+// }
+//
+// class First extends Zero {
+//
+//   constructor(name, years) {
+//     console.log('First-constructor-start');
+//     super(name);
+//     console.log('First-constructor-afterSuper');
+//     this.years = years;
+//     console.log('First-constructor-end');
+//   }
+//
+//   getAddLog() {
+//     console.log('First-getAddLog-start');
+//     return this.years + ' years old and I ' + this.getSuperAddLog();
+//   }
+//
+// }
+//
+// class Second extends First {
+//
+//   constructor(name, years) {
+//     console.log('Second-constructor-start');
+//     super(name, years);
+//     console.log('Second-constructor-afterSuper');
+//     this.sentiment = 'happy';
+//     console.log('Second-constructor-end');
+//   }
+//
+//   getSuperAddLog() {
+//     console.log('Second-getSuperAddLog-start');
+//     return this.sentiment;
+//   }
+// }
+//
+// const myClass = new Second('mike', '30');
+//
+// console.log(myClass);
+//
+// myClass.getAddLog();
