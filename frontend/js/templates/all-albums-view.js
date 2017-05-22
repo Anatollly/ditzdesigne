@@ -4,13 +4,13 @@ import {getImageS} from '../util';
 
 class AllAlbumsView extends AbstractView {
 
-  constructor(data) {
+  constructor(data, box) {
     super();
     this.data = data;
     this.coversOfAlbums = [];
     this.namesOfAlbums = [];
     this.arrData = Object.keys(this.data);
-    this.albumBox = document.querySelector('.row-4 .row__image');
+    this.albumBox = box;
   }
 
   getDataOfAlbum() {
@@ -40,4 +40,4 @@ class AllAlbumsView extends AbstractView {
 
 }
 
-export default (data) => new AllAlbumsView(data).element;
+export default (data, box) => new AllAlbumsView(data, box).element;

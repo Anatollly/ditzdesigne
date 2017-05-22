@@ -23,9 +23,10 @@ export const getElementFromTemplate = (nodeElement) => {
   return node;
 };
 
+const mainElement = document.querySelector('.content');
 
 export const displayElement = (element) => {
-  const mainElement = document.querySelector('screenImage');
   mainElement.innerHTML = '';
+  console.log(element);
   mainElement.appendChild(element);
 };
