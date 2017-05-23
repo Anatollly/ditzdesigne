@@ -1,4 +1,4 @@
-export default class Controller {
+class Controller {
 
   get hash() {
     let hash = window.location.hash.slice(1);
@@ -10,3 +10,5 @@ export default class Controller {
   }
 
 }
+
+export default () => new Controller();

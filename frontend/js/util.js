@@ -27,6 +27,5 @@ const mainElement = document.querySelector('.content');
 
 export const displayElement = (element) => {
   mainElement.innerHTML = '';
-  console.log(element);
   mainElement.appendChild(element);
 };
