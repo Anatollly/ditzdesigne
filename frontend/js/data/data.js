@@ -37,7 +37,7 @@ export const imageData = {
 export const galleryData = {
   album1: {
     name: 'album one',
-    content: ['img-1.jpg', 'img-2.jpg', 'img-3.jpg', 'img-4.jpg', 'img-5.jpg', 'img-10.jpg', 'img-11.jpg', 'img-12.jpg', 'img-13.jpg', 'img-14.jpg', 'slider-img-1.png', 'slider-img-2.png', 'slider-img-3.png', 'slider-img-4.png', 'slider-img-5.png']
+    content: ['img-1.jpg', 'img-2.jpg', 'img-3.jpg', 'img-4.jpg', 'img-5.jpg', 'img-10.jpg', 'img-11.jpg', 'img-12.jpg', 'img-13.jpg', 'img-14.jpg']
   },
   album2: {
     name: 'album two',

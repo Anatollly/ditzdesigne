@@ -52,14 +52,24 @@ class MainPageView extends AbstractPageView {
     bestseller.addEventListener('click', Application.showBestsellerPage);
     shares.addEventListener('click', Application.showSharesPage);
     this.rightPictures.addEventListener('click', (e) => {
-      Application['show' + e.target.src.split('/')[4].split('.')[0] + 'Page']();
+      try {
+        Application['show' + e.target.src.split('/')[4].split('.')[0] + 'Page']();
+      } catch (err) {
+        Application.showErrorPage();
+      }
     });
     slider.addEventListener('click', (e) => {
-      sliderImages.forEach((li, i) => {
-        if (li.classList.contains('animate')) {
-          Application['show' + sliderData[i].split('.')[0].split('-')[1] + 'Page']();
-        }
-      });
+      if (!(e.target.localName === 'a')) {
+        sliderImages.forEach((li, i) => {
+          if (li.classList.contains('animate')) {
+            try {
+              Application['show' + sliderData[i].split('.')[0].split('-')[1] + 'Page']();
+            } catch (err) {
+              Application.showErrorPage();
+            }
+          }
+        });
+      }
     });
   }
 

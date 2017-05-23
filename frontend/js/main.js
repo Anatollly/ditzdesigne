@@ -12,6 +12,6 @@ Application.showMainPage();
 logoMain.addEventListener('click', Application.showMainPage);
 aboutUs.addEventListener('click', Application.showAboutUsPage);
 portfolio.addEventListener('click', Application.showPortfolioPage);
-services.addEventListener('click', Application.showServicePage);
+services.addEventListener('click', Application.showServicesPage);
 technologies.addEventListener('click', Application.showTechnologiesPage);
 contacts.addEventListener('click', Application.showContactsPage);

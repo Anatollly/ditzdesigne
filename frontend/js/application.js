@@ -10,6 +10,7 @@ import interTextilePageView from './pages/interTextile-page';
 import sharesPageView from './pages/shares-page';
 import textileForRestPageView from './pages/textileForRest-page';
 import uniformsPageView from './pages/uniforms-page';
+import errorPageView from './pages/error-page';
 
 
 export default class Application {
@@ -26,7 +27,7 @@ export default class Application {
     displayElement(portfolioPageView());
   }
 
-  static showServicePage() {
+  static showServicesPage() {
     displayElement(servicesPageView());
   }
 
@@ -56,5 +57,9 @@ export default class Application {
 
   static showUniformsPage() {
     displayElement(uniformsPageView());
+  }
+
+  static showErrorPage() {
+    displayElement(errorPageView());
   }
 }
