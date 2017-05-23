@@ -1,0 +1,16 @@
+import AbstractPageView from './abstract-page-view';
+
+class UniformsPageView extends AbstractPageView {
+
+  getMarkup() {
+    return `<div class="row uniformsPage">
+      <div class="row__caption">
+        <div class="name">Изготовление униформы на заказ</div>
+        <div class="image"><img src="img/pic-1.png" alt=""></div>
+      </div>
+    </div>`;
+  }
+
+}
+
+export default () => new UniformsPageView().element;

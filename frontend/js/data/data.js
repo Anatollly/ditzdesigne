@@ -26,10 +26,10 @@ export const linksData = {
   address: 'ул. Красный проспект, д.220',
 };
 
-export const sliderData = ['img-1.jpg', 'slider-img-1.png', 'slider-img-2.png', 'slider-img-3.png', 'slider-img-4.png', 'slider-img-5.png'];
+export const sliderData = ['slider-AboutUs.png', 'slider-Contacts.png', 'slider-Shares.png', 'slider-Technologies.png', 'slider-Services.png'];
 
 export const imageData = {
-  row1: ['picture-3.png', 'picture-2.png', 'picture-1.png'],
+  row1: ['TextileForRest.png', 'Uniforms.png', 'InterTextile.png'],
   row2: ['row2-img-1.png', 'row2-img-2.png', 'row2-img-3.png', 'row2-img-4.png'],
   row3: ['row2-img-3.png', 'row3-img-1.png', 'row2-img-2.png']
 };

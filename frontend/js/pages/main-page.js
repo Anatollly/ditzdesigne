@@ -2,8 +2,14 @@ import AbstractPageView from './abstract-page-view';
 import imageView from '../templates/image-view';
 import mainSliderView from '../templates/main-slider-view';
 import {sliderData, imageData} from '../data/data';
+import Application from '../application';
 
 class MainPageView extends AbstractPageView {
+
+  constructor() {
+    super();
+    this.rightPictures = imageView(imageData.row1);
+  }
 
   getMarkup() {
     return `<div class="row row-1">
@@ -29,18 +35,32 @@ class MainPageView extends AbstractPageView {
   }
 
   addElements() {
-    const rightPictures = imageView(imageData.row1);
-    rightPictures.classList.add('rightPictures');
+    this.rightPictures.classList.add('rightPictures');
 
     this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(sliderData));
-    this.element.querySelector('.row-1 .row__content').appendChild(rightPictures);
+    this.element.querySelector('.row-1 .row__content').appendChild(this.rightPictures);
 
     this.element.querySelector('.row-2 .row__image').appendChild(imageView(imageData.row2));
     this.element.querySelector('.row-3 .row__image').appendChild(imageView(imageData.row3));
   }
 
   bindHandlers() {
-
+    const bestseller = this.element.querySelector('.row-2 .name');
+    const shares = this.element.querySelector('.row-3 .name');
+    const slider = this.element.querySelector('.slider-onLeft');
+    const sliderImages = this.element.querySelectorAll('.slider-onLeft li');
+    bestseller.addEventListener('click', Application.showBestsellerPage);
+    shares.addEventListener('click', Application.showSharesPage);
+    this.rightPictures.addEventListener('click', (e) => {
+      Application['show' + e.target.src.split('/')[4].split('.')[0] + 'Page']();
+    });
+    slider.addEventListener('click', (e) => {
+      sliderImages.forEach((li, i) => {
+        if (li.classList.contains('animate')) {
+          Application['show' + sliderData[i].split('.')[0].split('-')[1] + 'Page']();
+        }
+      });
+    });
   }
 
 }
