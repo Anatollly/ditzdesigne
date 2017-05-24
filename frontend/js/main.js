@@ -1,13 +1,23 @@
 import Application from './application';
 import hashController from './controller';
 
-if (hashController().hash) {
+
+const checkValidHash = () => {
   try {
     let w = hashController().hash.slice(1);
     Application['show' + (w.charAt(0).toUpperCase() + w.slice(1)) + 'Page']();
-  } catch (e) {
+  } catch (err) {
+    history.replaceState({page: 1}, '', '#/error');
     Application.showErrorPage();
   }
+};
+
+window.onpopstate = (e) => {
+  checkValidHash();
+};
+
+if (hashController().hash) {
+  checkValidHash();
 } else {
   Application.showMainPage();
 }
