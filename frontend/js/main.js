@@ -1,6 +1,7 @@
 import Application from './application';
 import hashController from './controller';
 
+console.log('test');
 
 const checkValidHash = () => {
   try {
@@ -21,6 +22,7 @@ if (hashController().hash) {
 } else {
   Application.showMainPage();
 }
+
 
 const logoMain = document.querySelector('.logo_main');
 const aboutUs = document.querySelector('.aboutUs');

@@ -1,3 +1,5 @@
+import {getDataFromServer} from '../util';
+
 export const menuData = {
   aboutUs: ['quality', 'branding'],
   portfolio: [],
@@ -34,6 +36,8 @@ export const imageData = {
   row3: ['row2-img-3.png', 'row3-img-1.png', 'row2-img-2.png']
 };
 
+let dataFromServer = getDataFromServer();
+
 export const galleryData = {
   album1: {
     name: 'album one',
@@ -54,5 +58,9 @@ export const galleryData = {
   album5: {
     name: 'top album',
     content: ['img-14.jpg', 'img-20.jpg', 'img-8.jpg', 'img-21.jpg', 'img-22.jpg', 'img-23.jpg', 'img-26.jpg', 'img-25.jpg', 'img-24.jpg']
+  },
+  album6: {
+    name: 'album from server',
+    content: dataFromServer
   }
 };

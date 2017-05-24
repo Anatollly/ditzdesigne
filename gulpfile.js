@@ -17,7 +17,8 @@ const notify = require('gulp-notify');
 const babel = require('gulp-babel');
 const webpack = require('gulp-webpack');
 const gcmq = require('gulp-group-css-media-queries');
-const app = require('./server/app')
+const app = require('./server/app');
+var nodemon = require('gulp-nodemon');
 
 // require('babel-register');
 
@@ -61,20 +62,33 @@ gulp.task('html', function() {
   return gulp.src('frontend/index.html', {since: gulp.lastRun('html')})
     .pipe(newer('build'))
     .pipe(gulp.dest('build'));
-})
+});
 
 gulp.task('img', function() {
   return gulp.src('frontend/img/**/*.*', {since: gulp.lastRun('img')})
     .pipe(newer('build/img/'))
     .pipe(gulp.dest('build/img/'));
-})
+});
 
-gulp.task('build', gulp.series('clean', 'html', 'styles', 'scripts', 'img'));
+gulp.task('appServer', function() {
+  return gulp.src('server/app.js')
+    .pipe(gulp.dest('build/server/'));
+});
+
+gulp.task('build', gulp.series('clean', 'html', 'styles', 'scripts', 'img', 'appServer'));
 
 gulp.task('watch', function() {
   gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
   gulp.watch('frontend/js/**/*.*', gulp.series('scripts'));
   gulp.watch('frontend/*.html', gulp.series('html'));
+  gulp.watch('server/app.js', gulp.series('appServer'));
+});
+
+gulp.task('start', function () {
+  nodemon({
+    script: 'build/server/app.js',
+    ext: 'js'
+  })
 });
 
 gulp.task('serve', function () {

@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+
 export const getImageS = (data, name = '') => {
   const ulImage = document.createElement('ul');
   data.forEach((img, i) => {
@@ -28,4 +30,19 @@ const mainElement = document.querySelector('.content');
 export const displayElement = (element) => {
   mainElement.innerHTML = '';
   mainElement.appendChild(element);
+};
+
+export const getDataFromServer = () => {
+  let dataImg = [];
+  window.fetch('./data').
+      then(status).
+      then((response) => response.json()).
+      then((data) => {
+        console.log(data);
+        dataImg = data;
+      }).
+      catch(() => {
+        console.log('error');
+      });
+  return dataImg;
 };
