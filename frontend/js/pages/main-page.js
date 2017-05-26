@@ -1,14 +1,14 @@
 import AbstractPageView from './abstract-page-view';
 import imageView from '../templates/image-view';
 import mainSliderView from '../templates/main-slider-view';
-import {sliderData, imageData} from '../data/data';
+import {AppData} from '../data/data';
 import Application from '../application';
 
 class MainPageView extends AbstractPageView {
 
   constructor() {
     super();
-    this.rightPictures = imageView(imageData.row1);
+    this.rightPictures = imageView(AppData.imagesData.rowRight);
   }
 
   getMarkup() {
@@ -37,11 +37,11 @@ class MainPageView extends AbstractPageView {
   addElements() {
     this.rightPictures.classList.add('rightPictures');
 
-    this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(sliderData));
+    this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(AppData.imagesData.mainSlider));
     this.element.querySelector('.row-1 .row__content').appendChild(this.rightPictures);
 
-    this.element.querySelector('.row-2 .row__image').appendChild(imageView(imageData.row2));
-    this.element.querySelector('.row-3 .row__image').appendChild(imageView(imageData.row3));
+    this.element.querySelector('.row-2 .row__image').appendChild(imageView(AppData.imagesData.row2));
+    this.element.querySelector('.row-3 .row__image').appendChild(imageView(AppData.imagesData.row3));
   }
 
   bindHandlers() {

@@ -75,4 +75,5 @@ export default class Application {
     displayElement(errorPageView());
     hashController().hash = '/error';
   }
+
 }

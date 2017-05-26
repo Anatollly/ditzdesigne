@@ -1,4 +1,3 @@
-import {getDataFromServer} from '../util';
 
 export const menuData = {
   aboutUs: ['quality', 'branding'],
@@ -28,39 +27,25 @@ export const linksData = {
   address: 'ул. Красный проспект, д.220',
 };
 
-export const sliderData = ['slider-AboutUs.png', 'slider-Contacts.png', 'slider-Shares.png', 'slider-Technologies.png', 'slider-Services.png'];
 
-export const imageData = {
-  row1: ['TextileForRest.png', 'Uniforms.png', 'InterTextile.png'],
-  row2: ['row2-img-1.png', 'row2-img-2.png', 'row2-img-3.png', 'row2-img-4.png'],
-  row3: ['row2-img-3.png', 'row3-img-1.png', 'row2-img-2.png']
-};
+let albumDataVar;
+let imagesDataVar;
 
-let dataFromServer = getDataFromServer();
+export class AppData {
 
-export const galleryData = {
-  album1: {
-    name: 'album one',
-    content: ['img-1.jpg', 'img-2.jpg', 'img-3.jpg', 'img-4.jpg', 'img-5.jpg', 'img-10.jpg', 'img-11.jpg', 'img-12.jpg', 'img-13.jpg', 'img-14.jpg']
-  },
-  album2: {
-    name: 'album two',
-    content: ['img-10.jpg', 'img-11.jpg', 'img-12.jpg', 'img-13.jpg', 'img-14.jpg']
-  },
-  album3: {
-    name: 'album three',
-    content: ['img-20.jpg', 'img-21.jpg', 'img-22.jpg', 'img-23.jpg', 'img-24.jpg']
-  },
-  album4: {
-    name: 'album four',
-    content: ['img-16.jpg', 'img-6.jpg', 'img-9.jpg', 'img-15.jpg', 'img-17.jpg']
-  },
-  album5: {
-    name: 'top album',
-    content: ['img-14.jpg', 'img-20.jpg', 'img-8.jpg', 'img-21.jpg', 'img-22.jpg', 'img-23.jpg', 'img-26.jpg', 'img-25.jpg', 'img-24.jpg']
-  },
-  album6: {
-    name: 'album from server',
-    content: dataFromServer
+  set albums(data) {
+    albumDataVar = data;
   }
-};
+
+  get albums() {
+    return albumDataVar;
+  }
+
+  set images(data) {
+    imagesDataVar = data;
+  }
+
+  get albums() {
+    return imagesDataVar;
+  }
+}

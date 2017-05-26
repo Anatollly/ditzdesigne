@@ -1,5 +1,3 @@
-import 'whatwg-fetch';
-
 export const getImageS = (data, name = '') => {
   const ulImage = document.createElement('ul');
   data.forEach((img, i) => {
@@ -13,7 +11,7 @@ export const getImageS = (data, name = '') => {
     image.onerror = () => {
       liImage.innerHTML = `Error: image-${i + 1} load failure!`;
     };
-    image.src = './img/' + img;
+    image.src = img;
   });
   return ulImage;
 };
@@ -30,19 +28,4 @@ const mainElement = document.querySelector('.content');
 export const displayElement = (element) => {
   mainElement.innerHTML = '';
   mainElement.appendChild(element);
-};
-
-export const getDataFromServer = () => {
-  let dataImg = [];
-  window.fetch('./data').
-      then(status).
-      then((response) => response.json()).
-      then((data) => {
-        console.log(data);
-        dataImg = data;
-      }).
-      catch(() => {
-        console.log('error');
-      });
-  return dataImg;
 };

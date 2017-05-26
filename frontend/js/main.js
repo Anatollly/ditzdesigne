@@ -1,7 +1,27 @@
 import Application from './application';
 import hashController from './controller';
+import {AppData} from './data/data';
 
-console.log('test');
+window.fetch('./images').
+    then(status).
+    then((response) => response.json()).
+    then((data) => {
+      AppData.imagesData = data;
+      showPage();
+    }).
+    catch(() => {
+      Application.showErrorPage();
+    });
+
+window.fetch('./albums').
+    then(status).
+    then((response) => response.json()).
+    then((data) => {
+      AppData.albumsData = data;
+    }).
+    catch(() => {
+      Application.showErrorPage();
+    });
 
 const checkValidHash = () => {
   try {
@@ -17,11 +37,13 @@ window.onpopstate = (e) => {
   checkValidHash();
 };
 
-if (hashController().hash) {
-  checkValidHash();
-} else {
-  Application.showMainPage();
-}
+const showPage = () => {
+  if (hashController().hash) {
+    checkValidHash();
+  } else {
+    Application.showMainPage();
+  }
+};
 
 
 const logoMain = document.querySelector('.logo_main');

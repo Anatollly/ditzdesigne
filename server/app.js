@@ -1,34 +1,61 @@
-var express = require('express');
-var app = express();
-var path = require('path');
-var fs = require('fs');
+const express = require('express');
+const app = express();
+const path = require('path');
+const fs = require('fs');
 
-var dataImg;
+const ALBUMSDIR = 'photo/albums';
+const IMAGESDIR = 'photo/images';
 
-fs.readdir('build/img', function(err, file) {
-  if (err) {
-    console.log(err);
-    throw new Error('wrong file');
-  } else {
-    console.log(file);
-    // dataImg = JSON.stringify(file);
-    dataImg = file;
-  }
-});
+// Сейчас app.js запускается с директории ditzdesigne, а в продакшене будет с build.
+// сейчас app.js берет файлы в ditzdesigne/photo, а браузер - build/photo.
+// в продакшене будет одна директория. ниче не поменяется, но нужно держать в уме
+
+const getNamesFromDir = (dir) => {
+  let imagesData = {};
+  fs.readdir(dir, (err, folders) => {
+    if (err) {
+      throw new Error('wrong directory');
+    } else {
+      folders.forEach((name, i) => {
+        fs.readdir(dir + '/' + name, (err2, images) => {
+          if (err2) {
+            throw new Error('wrong file');
+          } else {
+            images.forEach((img, n) => {
+              images[n] = dir + '/' + name + '/' + img;
+            });
+            imagesData[name] = images;
+          }
+        });
+      });
+    }
+  });
+  return imagesData;
+};
+
+let allAlbumsData = getNamesFromDir(ALBUMSDIR);
+let imagesOfPagesData = getNamesFromDir(IMAGESDIR);
+
 
 app.get('/', function (req, res) {
   res.sendFile(path.resolve('build/index.html'));
 });
 
-app.get('/data', function (req, res) {
-  res.send(dataImg);
+app.get('/albums', function (req, res) {
+  res.send(allAlbumsData);
+});
+
+app.get('/images', function (req, res) {
+  res.send(imagesOfPagesData);
+});
+
+app.get('/test', function (req, res) {
+  res.send('test');
 });
 
 app.use(express.static('build'));
 
 
-app.listen(5000, function () {
-  console.log('App listening on port 3000!');
+app.listen(3501, function () {
+  console.log('App listening on port 3501!');
 });
-
-exports.app;

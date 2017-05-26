@@ -1,6 +1,6 @@
 import AbstractPageView from './abstract-page-view';
 import allAlbumsView from '../templates/all-albums-view';
-import {galleryData} from '../data/data';
+import {AppData} from '../data/data';
 
 class PortfolioPageView extends AbstractPageView {
 
@@ -22,11 +22,11 @@ class PortfolioPageView extends AbstractPageView {
     const albumBox = this.element.querySelector('.row-4 .row__image');
     const screenImage = this.element.querySelector('.screenImage');
 
-    albumBox.appendChild(allAlbumsView(galleryData, albumBox));
+    albumBox.appendChild(allAlbumsView(AppData.albumsData, albumBox));
     backButton.addEventListener('click', () => {
       albumBox.innerHTML = '';
       screenImage.innerHTML = '';
-      albumBox.appendChild(allAlbumsView(galleryData, albumBox));
+      albumBox.appendChild(allAlbumsView(AppData.albumsData, albumBox));
     });
   }
 

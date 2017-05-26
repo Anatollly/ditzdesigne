@@ -15,8 +15,8 @@ class AllAlbumsView extends AbstractView {
 
   getDataOfAlbum() {
     for (let i = 0; i < this.arrData.length; i++) {
-      this.coversOfAlbums.push(this.data[this.arrData[i]].content[0]);
-      this.namesOfAlbums.push(`<div>${this.data[this.arrData[i]].name}</div>`);
+      this.coversOfAlbums.push(this.data[this.arrData[i]][0]);
+      this.namesOfAlbums.push(`<div>${this.arrData[i]}</div>`);
     }
   }
 
@@ -29,9 +29,9 @@ class AllAlbumsView extends AbstractView {
     this.element.addEventListener('click', (e) => {
       if (e.target.src) {
         this.arrData.forEach((name, i) => {
-          if (this.data[name].content[0] === e.target.src.split('/')[4]) {
+          if (name === e.target.src.split('/')[5]) {
             this.albumBox.innerHTML = '';
-            this.albumBox.appendChild(albumView(this.data[name].content));
+            this.albumBox.appendChild(albumView(this.data[name]));
           }
         });
       }

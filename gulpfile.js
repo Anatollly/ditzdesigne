@@ -17,8 +17,8 @@ const notify = require('gulp-notify');
 const babel = require('gulp-babel');
 const webpack = require('gulp-webpack');
 const gcmq = require('gulp-group-css-media-queries');
-const app = require('./server/app');
-var nodemon = require('gulp-nodemon');
+const nodemon = require('gulp-nodemon');
+// const livereload = require('gulp-livereload');
 
 // require('babel-register');
 
@@ -55,7 +55,7 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('clean', function() {
-  return del('build/*');
+  return del(['build/*']);
 });
 
 gulp.task('html', function() {
@@ -70,25 +70,24 @@ gulp.task('img', function() {
     .pipe(gulp.dest('build/img/'));
 });
 
+gulp.task('photo', function() {
+  return gulp.src('photo/**/*.*', {since: gulp.lastRun('photo')})
+    .pipe(newer('build/photo/'))
+    .pipe(gulp.dest('build/photo/'));
+});
+
 gulp.task('appServer', function() {
-  return gulp.src('server/app.js')
+  return gulp.src('server/**/*.*')
     .pipe(gulp.dest('build/server/'));
 });
 
-gulp.task('build', gulp.series('clean', 'html', 'styles', 'scripts', 'img', 'appServer'));
+gulp.task('build', gulp.series('clean', 'html', 'styles', 'scripts', 'img', 'photo', 'appServer'));
 
 gulp.task('watch', function() {
   gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
   gulp.watch('frontend/js/**/*.*', gulp.series('scripts'));
   gulp.watch('frontend/*.html', gulp.series('html'));
   gulp.watch('server/app.js', gulp.series('appServer'));
-});
-
-gulp.task('start', function () {
-  nodemon({
-    script: 'build/server/app.js',
-    ext: 'js'
-  })
 });
 
 gulp.task('serve', function () {
@@ -101,9 +100,21 @@ gulp.task('serve', function () {
   });
 
   browserSync.watch('build/**/*.*').on('change', browserSync.reload);
-  // app.listen;
+});
+
+gulp.task('nodemon', function () {
+
+  nodemon({
+    script: 'build/server/app.js',
+    watch: 'build/*',
+    ext: 'js css html'
+  });
 });
 
 gulp.task('dev',
   gulp.series('build',
     gulp.parallel('watch', 'serve')));
+
+gulp.task('server',
+  gulp.series('build',
+    gulp.parallel('watch', 'nodemon')));
