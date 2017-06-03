@@ -19,7 +19,7 @@ class MainPageView extends AbstractPageView {
     <div class="row row-2">
       <div class="row__caption">
         <div class="name">Хит продаж</div>
-        <div class="image"><img src="img/pic-2.png" alt=""></div>
+        <div class="image"><img src="frontend/img/pic-2.png" alt=""></div>
       </div>
       <div class="row__image">
       </div>
@@ -27,7 +27,7 @@ class MainPageView extends AbstractPageView {
     <div class="row row-3">
       <div class="row__caption">
         <div class="name">Акции</div>
-        <div class="image"><img src="img/pic-1.png" alt=""></div>
+        <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>
       </div>
       <div class="row__image row__image-threeImg">
       </div>

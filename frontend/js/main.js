@@ -1,6 +1,7 @@
 import Application from './application';
 import hashController from './controller';
 import {AppData} from './data/data';
+import 'whatwg-fetch';
 
 window.fetch('./images').
     then(status).
@@ -32,6 +33,8 @@ const checkValidHash = () => {
     Application.showErrorPage();
   }
 };
+
+console.dir(checkValidHash);
 
 window.onpopstate = (e) => {
   checkValidHash();
