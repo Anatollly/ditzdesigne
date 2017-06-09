@@ -71,7 +71,7 @@ gulp.task('img', function() {
 });
 
 gulp.task('photo', function() {
-  return gulp.src('photo/**/*.*', {since: gulp.lastRun('photo')})
+  return gulp.src('photo/**/*.*')
     .pipe(newer('build/photo/'))
     .pipe(gulp.dest('build/photo/'));
 });
@@ -88,6 +88,7 @@ gulp.task('watch', function() {
   gulp.watch('frontend/js/**/*.*', gulp.series('scripts'));
   gulp.watch('frontend/*.html', gulp.series('html'));
   gulp.watch('server/**/*.*', gulp.series('appServer'));
+  gulp.watch('photo/**/*.*', { delay: 5000 }, gulp.series('photo'));
 });
 
 gulp.task('serve', function () {

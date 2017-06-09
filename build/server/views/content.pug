@@ -1,0 +1,44 @@
+extends template
+
+block content
+  if !currentItem
+    .lead= 'some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text some text'
+  else
+    if currentFolder
+      h4= currentItem + ' --> ' + currentFolder
+    else
+      h4= currentItem
+    .row
+      .col-2
+        if folders
+          ul.list-group(style={'margin-top': '20px'})
+            each folder in folders
+              li.list-group-item.list-group-item-action
+                a(href='http://' + host + '/admin/' + currentItem + '/' + folder)= folder
+      .col-10
+        if errorData
+          h3= errorData
+            a.btn.btn-info.btn-lg(href='http://' + host + '/admin/' + currentItem)= 'Reload'
+        if currentFolder && upload
+          form(method='post', enctype='multipart/form-data')
+            input(type='file', multiple)
+            input.btn.btn-warning.btn-lg(type='submit', value='Upload')
+        else if currentFolder
+          form(method='post')
+            input.btn.btn-warning.btn-lg(type='submit', value='Delete', style={'margin-left': '25px'})
+            input.btn.btn-info.btn-lg(type='reset', value='Reset', style={'margin-left': '25px'})
+            a.btn.btn-success.btn-lg(href='http://' + host + '/admin/' + currentItem + '/' + currentFolder + '/upload', style={'margin-left': '25px'})= 'Add images'
+            label.btn.btn-danger.btn-lg(for=currentFolder, style={'margin': '1px 0 0 25px'})= 'Delete folder'
+              input#currentFolder(type='checkbox', name=currentFolder, style={'margin-left': '5px'})
+            if images
+              ul.row
+                each image in images
+                  li.col-3.list-group(style={'margin-top': '20px'})
+                    img.img-thumbnail(src='http://' + host + '/' + image, style={width: '200px', height: '200px'})
+                    label(for=image)= image
+                    input#image(type='checkbox', name=image)
+        hr
+        //- form(method='post', enctype='multipart/form-data')
+        //-   input(type='file', multiple)
+        //-   input.btn.btn-warning.btn-lg(type='submit', value='Send')
+  hr

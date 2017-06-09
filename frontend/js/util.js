@@ -9,7 +9,7 @@ export const getImageS = (data, name = '') => {
       liImage.appendChild(image);
     };
     image.onerror = () => {
-      liImage.innerHTML = `Error: image-${i + 1} load failure!`;
+      liImage.innerHTML = `Error: image-${img} load failure!`;
     };
     image.src = img;
   });
