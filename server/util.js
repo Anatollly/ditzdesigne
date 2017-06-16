@@ -28,7 +28,40 @@ const delFiles = (files) => {
   });
 };
 
+const copyFile = (source, target, cb) => {
+  let cbCalled = false;
+
+  const done = (err) => {
+    if (!cbCalled) {
+      cb(err);
+      cbCalled = true;
+    }
+  };
+
+  let rd = fs.createReadStream(source);
+  rd.on('error', (err) => {
+    done(err);
+  });
+  let wr = fs.createWriteStream(target);
+  wr.on('error', (err) => {
+    done(err);
+  });
+  wr.on('close', (ex) => {
+    done();
+  });
+  rd.pipe(wr);
+};
+
+const createFolder = (dir) => {
+  console.log(dir);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+};
+
 module.exports = {
   getPathsOfFiles,
-  delFiles
+  delFiles,
+  copyFile,
+  createFolder
 };

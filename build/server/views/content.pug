@@ -19,11 +19,13 @@ block content
         if errorData
           h3= errorData
             a.btn.btn-info.btn-lg(href='http://' + host + '/admin/' + currentItem)= 'Reload'
-        if currentFolder && upload
+
+        if currentItem && currentFolder && upload
           form(method='post', enctype='multipart/form-data')
-            input(type='file', multiple)
+            input(type='file', name='uploadFile', multiple)
             input.btn.btn-warning.btn-lg(type='submit', value='Upload')
-        else if currentFolder
+
+        else if currentItem && currentFolder
           form(method='post')
             input.btn.btn-warning.btn-lg(type='submit', value='Delete', style={'margin-left': '25px'})
             input.btn.btn-info.btn-lg(type='reset', value='Reset', style={'margin-left': '25px'})
@@ -37,6 +39,11 @@ block content
                     img.img-thumbnail(src='http://' + host + '/' + image, style={width: '200px', height: '200px'})
                     label(for=image)= image
                     input#image(type='checkbox', name=image)
+        else if currentItem
+          form(method='post')
+            input(type='text', name='nameFolder')
+            input.btn.btn-warning.btn-lg(type='submit', value='Add folder', style={'margin-left': '25px'})
+        
         hr
         //- form(method='post', enctype='multipart/form-data')
         //-   input(type='file', multiple)
