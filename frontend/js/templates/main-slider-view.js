@@ -35,7 +35,7 @@ class MainSliderView extends AbstractSliderView {
   }
 
   getAddElement() {
-    return getElementFromTemplate('<img class="slider__imgSize" src="img/empty.jpg" alt="">');
+    return getElementFromTemplate('<img class="slider__imgSize" src="frontend/img/empty.jpg" alt="">');
   }
 
   setAddClass() {

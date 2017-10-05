@@ -18,9 +18,18 @@ const babel = require('gulp-babel');
 const webpack = require('gulp-webpack');
 const gcmq = require('gulp-group-css-media-queries');
 const nodemon = require('gulp-nodemon');
+
+console.log(gulp);
+// const watch = require('gulp-watch');
+// const chokidar = require('chokidar');
+
 // const livereload = require('gulp-livereload');
 
+// gulp.watch = watch;
+
 // require('babel-register');
+
+console.log(gulp);
 
 gulp.task('styles', function() {
   return gulp.src('frontend/styles/main.styl')
@@ -34,7 +43,7 @@ gulp.task('styles', function() {
       }))
     .pipe(gcmq())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('build/css'))
+    .pipe(gulp.dest('build/frontend/css/'))
 });
 
 gulp.task('scripts', function () {
@@ -51,7 +60,7 @@ gulp.task('scripts', function () {
           filename: "main.js"
       }
     }))
-    .pipe(gulp.dest('build/js/'));
+    .pipe(gulp.dest('build/frontend/js/'));
 });
 
 gulp.task('clean', function() {
@@ -66,28 +75,35 @@ gulp.task('html', function() {
 
 gulp.task('img', function() {
   return gulp.src('frontend/img/**/*.*', {since: gulp.lastRun('img')})
-    .pipe(newer('build/img/'))
-    .pipe(gulp.dest('build/img/'));
+    .pipe(newer('build/frontend/img/'))
+    .pipe(gulp.dest('build/frontend/img/'));
 });
 
-gulp.task('photo', function() {
-  return gulp.src('photo/**/*.*', {since: gulp.lastRun('photo')})
+gulp.task('delPhoto', function() {
+  return del(['build/photo/*'])
+})
+
+gulp.task('copyPhoto', function() {
+  return gulp.src('photo/**')
     .pipe(newer('build/photo/'))
     .pipe(gulp.dest('build/photo/'));
 });
+
+gulp.task('photo', gulp.series('delPhoto', 'copyPhoto'));
 
 gulp.task('appServer', function() {
   return gulp.src('server/**/*.*')
     .pipe(gulp.dest('build/server/'));
 });
 
-gulp.task('build', gulp.series('clean', 'html', 'styles', 'scripts', 'img', 'photo', 'appServer'));
+gulp.task('build', gulp.series('clean', 'html', 'styles', 'scripts', 'img', 'copyPhoto', 'appServer'));
 
 gulp.task('watch', function() {
   gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
   gulp.watch('frontend/js/**/*.*', gulp.series('scripts'));
   gulp.watch('frontend/*.html', gulp.series('html'));
-  gulp.watch('server/app.js', gulp.series('appServer'));
+  gulp.watch('server/**/*.*', gulp.series('appServer'));
+  gulp.watch('photo/**/*.*', { delay: 5000 }, gulp.series('photo'));
 });
 
 gulp.task('serve', function () {

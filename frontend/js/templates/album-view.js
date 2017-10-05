@@ -14,6 +14,7 @@ class AlbumView extends ImageView {
     this.element.addEventListener('click', (e) => {
       if (e.target.src) {
         this.data.forEach((img, i) => {
+          console.log(img, e.target.src);
           if (img.split('/')[3] === e.target.src.split('/')[6]) {
             this.Slider.setImgOnClick(i);
           }

@@ -8,7 +8,7 @@ class MainPageView extends AbstractPageView {
 
   constructor() {
     super();
-    this.rightPictures = imageView(AppData.imagesData.rowRight);
+    this.rightPictures = imageView(AppData.images.rowRight);
   }
 
   getMarkup() {
@@ -19,7 +19,7 @@ class MainPageView extends AbstractPageView {
     <div class="row row-2">
       <div class="row__caption">
         <div class="name">Хит продаж</div>
-        <div class="image"><img src="img/pic-2.png" alt=""></div>
+        <div class="image"><img src="frontend/img/pic-2.png" alt=""></div>
       </div>
       <div class="row__image">
       </div>
@@ -27,7 +27,7 @@ class MainPageView extends AbstractPageView {
     <div class="row row-3">
       <div class="row__caption">
         <div class="name">Акции</div>
-        <div class="image"><img src="img/pic-1.png" alt=""></div>
+        <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>
       </div>
       <div class="row__image row__image-threeImg">
       </div>
@@ -37,11 +37,11 @@ class MainPageView extends AbstractPageView {
   addElements() {
     this.rightPictures.classList.add('rightPictures');
 
-    this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(AppData.imagesData.mainSlider));
+    this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(AppData.images.mainSlider));
     this.element.querySelector('.row-1 .row__content').appendChild(this.rightPictures);
 
-    this.element.querySelector('.row-2 .row__image').appendChild(imageView(AppData.imagesData.row2));
-    this.element.querySelector('.row-3 .row__image').appendChild(imageView(AppData.imagesData.row3));
+    this.element.querySelector('.row-2 .row__image').appendChild(imageView(AppData.images.row2));
+    this.element.querySelector('.row-3 .row__image').appendChild(imageView(AppData.images.row3));
   }
 
   bindHandlers() {
@@ -63,7 +63,7 @@ class MainPageView extends AbstractPageView {
         sliderImages.forEach((li, i) => {
           if (li.classList.contains('animate')) {
             try {
-              Application['show' + sliderData[i].split('.')[0].split('-')[1] + 'Page']();
+              Application['show' + AppData.images.mainSlider[i].split('.')[0].split('-')[1] + 'Page']();
             } catch (err) {
               Application.showErrorPage();
             }

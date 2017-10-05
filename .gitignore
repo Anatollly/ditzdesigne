@@ -1,4 +1,7 @@
 node_modules
-build
 copy
 test
+build
+photo/albums
+photo/albums_min
+photomin

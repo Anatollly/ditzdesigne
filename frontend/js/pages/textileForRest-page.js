@@ -6,7 +6,7 @@ class TextileForRestPageView extends AbstractPageView {
     return `<div class="row textileForRestPage">
       <div class="row__caption">
         <div class="name">Текстиль для ресторанов</div>
-        <div class="image"><img src="img/pic-1.png" alt=""></div>
+        <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>
       </div>
     </div>`;
   }

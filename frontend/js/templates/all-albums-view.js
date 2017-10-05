@@ -29,7 +29,8 @@ class AllAlbumsView extends AbstractView {
     this.element.addEventListener('click', (e) => {
       if (e.target.src) {
         this.arrData.forEach((name, i) => {
-          if (name === e.target.src.split('/')[5]) {
+          console.log(e.target.src.match(/\/([^\/]*)\/[^\/]*$/)[1]);
+          if (encodeURIComponent(name) === e.target.src.match(/\/([^\/]*)\/[^\/]*$/)[1]) {
             this.albumBox.innerHTML = '';
             this.albumBox.appendChild(albumView(this.data[name]));
           }

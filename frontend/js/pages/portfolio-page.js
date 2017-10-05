@@ -8,7 +8,7 @@ class PortfolioPageView extends AbstractPageView {
     return `<div class="row row-4">
       <div class="row__caption">
         <div class="name">Портфолио</div>
-        <div class="image"><img src="img/pic-1.png" alt=""></div>
+        <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>
       </div>
       <div class="row__image row__image-album">
       </div>
@@ -22,11 +22,11 @@ class PortfolioPageView extends AbstractPageView {
     const albumBox = this.element.querySelector('.row-4 .row__image');
     const screenImage = this.element.querySelector('.screenImage');
 
-    albumBox.appendChild(allAlbumsView(AppData.albumsData, albumBox));
+    albumBox.appendChild(allAlbumsView(AppData.albums, albumBox));
     backButton.addEventListener('click', () => {
       albumBox.innerHTML = '';
       screenImage.innerHTML = '';
-      albumBox.appendChild(allAlbumsView(AppData.albumsData, albumBox));
+      albumBox.appendChild(allAlbumsView(AppData.albums, albumBox));
     });
   }
 
