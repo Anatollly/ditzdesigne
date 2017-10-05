@@ -1,4 +1,7 @@
 const fs = require('fs');
+const mkdirp = require('mkdirp');
+const Jimp = require('jimp');
+// const resizeImage = require('resize-image');
 
 const getPathsOfFiles = (dir) => {
   let dirData = {};
@@ -21,14 +24,20 @@ const getPathsOfFiles = (dir) => {
   return dirData;
 };
 
-
-const delFiles = (files) => {
-  files.forEach((fileName) => {
-    fs.unlinkSync(fileName);
-  });
+const createFolder = (dir, cb) => {
+  if (!fs.existsSync(dir)) {
+    mkdirp(dir, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        cb();
+      }
+    });
+  }
 };
 
 const copyFile = (source, target, cb) => {
+
   let cbCalled = false;
 
   const done = (err) => {
@@ -49,19 +58,111 @@ const copyFile = (source, target, cb) => {
   wr.on('close', (ex) => {
     done();
   });
+
   rd.pipe(wr);
 };
 
-const createFolder = (dir) => {
-  console.log(dir);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+const resizeImage = (source, target, cb) => {
+
+  if (!fs.existsSync(target)) {
+    Jimp.read(source)
+        .then((img) => {
+          img.resize(256, 256)            // resize
+              .quality(60)                // set JPEG quality
+              .write(target);             // save
+        })
+        .then(() => {
+          cb();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
   }
+};
+
+const checkDir = (sourceDir, targetDir, cb) => {
+  fs.readdir(sourceDir, (err, folders) => {
+    if (err) {
+      console.log(err);
+    } else {
+      let n = 0;
+      folders.forEach((folder) => {
+        createFolder(targetDir + '/' + folder, () => {
+          n++;
+          fs.readdir(sourceDir + '/' + folder, (err2, images) => {
+            images.forEach((image) => {
+              resizeImage(sourceDir + '/' + folder + '/' + image, targetDir + '/' + folder + '/' + image, () => {
+              });
+            });
+          });
+          if (folders.length === n) {
+            cb();
+          }
+        });
+      });
+    }
+  });
+};
+
+
+const delFiles = (files, cb) => {
+  let n = 0;
+  files.forEach((file) => {
+    fs.unlink(file, () => {
+      n++;
+      if (files.length === n) {
+        cb();
+      }
+    });
+  });
+};
+
+const delFilesMin = (files, cb) => {
+  let n = 0;
+  files.forEach((file) => {
+    let fileMin = file.substr(0, 11) + '_min' + file.substr(12);
+    fs.unlink(fileMin, () => {
+      n++;
+      if (files.length === n) {
+        cb();
+      }
+    });
+  });
 };
 
 module.exports = {
   getPathsOfFiles,
   delFiles,
+  delFilesMin,
   copyFile,
-  createFolder
+  createFolder,
+  resizeImage,
+  checkDir
 };
+
+// const scanDir = (dir) => {
+//   return new Promise((resolve, reject) => {
+//     if (fs.existsSync(dir)) {
+//       fs.readdir(dir, (err, files) => {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(files);
+//         }
+//       });
+//     }
+//   });
+// };
+//
+// const copyFiles = (files, target) => {
+//   let n = 0;
+//   files.forEach((file) => {
+//     createFolder(target + '/' + file, () => {
+//       console.log('create folder ' + file);
+//       n++;
+//       if (files.length === n) {
+//         cb();
+//       }
+//     });
+//   });
+// };

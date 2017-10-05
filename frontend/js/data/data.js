@@ -45,7 +45,8 @@ export class AppData {
     imagesDataVar = data;
   }
 
-  get albums() {
+  get images() {
+    console.log(imagesDataVar);
     return imagesDataVar;
   }
 }

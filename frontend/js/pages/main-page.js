@@ -8,7 +8,7 @@ class MainPageView extends AbstractPageView {
 
   constructor() {
     super();
-    this.rightPictures = imageView(AppData.imagesData.rowRight);
+    this.rightPictures = imageView(AppData.images.rowRight);
   }
 
   getMarkup() {
@@ -37,11 +37,11 @@ class MainPageView extends AbstractPageView {
   addElements() {
     this.rightPictures.classList.add('rightPictures');
 
-    this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(AppData.imagesData.mainSlider));
+    this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(AppData.images.mainSlider));
     this.element.querySelector('.row-1 .row__content').appendChild(this.rightPictures);
 
-    this.element.querySelector('.row-2 .row__image').appendChild(imageView(AppData.imagesData.row2));
-    this.element.querySelector('.row-3 .row__image').appendChild(imageView(AppData.imagesData.row3));
+    this.element.querySelector('.row-2 .row__image').appendChild(imageView(AppData.images.row2));
+    this.element.querySelector('.row-3 .row__image').appendChild(imageView(AppData.images.row3));
   }
 
   bindHandlers() {
@@ -63,7 +63,7 @@ class MainPageView extends AbstractPageView {
         sliderImages.forEach((li, i) => {
           if (li.classList.contains('animate')) {
             try {
-              Application['show' + sliderData[i].split('.')[0].split('-')[1] + 'Page']();
+              Application['show' + AppData.images.mainSlider[i].split('.')[0].split('-')[1] + 'Page']();
             } catch (err) {
               Application.showErrorPage();
             }

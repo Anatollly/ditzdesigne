@@ -7,36 +7,52 @@ window.fetch('./images').
     then(status).
     then((response) => response.json()).
     then((data) => {
-      AppData.imagesData = data;
-      showPage();
+      console.log(data);
+      AppData.images = data;
+      // showPage();
+    }).
+    then(() => {
+      fetch('./albums').
+          then(status).
+          then((response) => response.json()).
+          then((data) => {
+            console.log(data);
+            AppData.albums = data;
+            showPage();
+          });
     }).
     catch(() => {
       Application.showErrorPage();
     });
 
-window.fetch('./albums').
-    then(status).
-    then((response) => response.json()).
-    then((data) => {
-      AppData.albumsData = data;
-    }).
-    catch(() => {
-      Application.showErrorPage();
-    });
+// window.fetch('./albums').
+//     then(status).
+//     then((response) => response.json()).
+//     then((data) => {
+//       AppData.albums = data;
+//       showPage();
+//     }).
+//     catch(() => {
+//       Application.showErrorPage();
+//     });
 
 const checkValidHash = () => {
   try {
-    let w = hashController().hash.slice(1);
-    Application['show' + (w.charAt(0).toUpperCase() + w.slice(1)) + 'Page']();
+    let h = hashController().hash.slice(1);
+    let page = 'show' + (h.charAt(0).toUpperCase() + h.slice(1)) + 'Page';
+    console.log(page);
+    Application[page]();
   } catch (err) {
+    console.log(err);
     history.replaceState({page: 1}, '', '#/error');
-    Application.showErrorPage();
+    // Application.showErrorPage();
   }
 };
 
-console.dir(checkValidHash);
+// checkValidHash();
 
 window.onpopstate = (e) => {
+  console.log('popstate');
   checkValidHash();
 };
 

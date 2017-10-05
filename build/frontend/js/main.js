@@ -63,33 +63,49 @@
 	window.fetch('./images').then(status).then(function (response) {
 	  return response.json();
 	}).then(function (data) {
-	  _data.AppData.imagesData = data;
-	  showPage();
+	  console.log(data);
+	  _data.AppData.images = data;
+	  // showPage();
+	}).then(function () {
+	  fetch('./albums').then(status).then(function (response) {
+	    return response.json();
+	  }).then(function (data) {
+	    console.log(data);
+	    _data.AppData.albums = data;
+	    showPage();
+	  });
 	}).catch(function () {
 	  _application2.default.showErrorPage();
 	});
 	
-	window.fetch('./albums').then(status).then(function (response) {
-	  return response.json();
-	}).then(function (data) {
-	  _data.AppData.albumsData = data;
-	}).catch(function () {
-	  _application2.default.showErrorPage();
-	});
+	// window.fetch('./albums').
+	//     then(status).
+	//     then((response) => response.json()).
+	//     then((data) => {
+	//       AppData.albums = data;
+	//       showPage();
+	//     }).
+	//     catch(() => {
+	//       Application.showErrorPage();
+	//     });
 	
 	var checkValidHash = function checkValidHash() {
 	  try {
-	    var w = (0, _controller2.default)().hash.slice(1);
-	    _application2.default['show' + (w.charAt(0).toUpperCase() + w.slice(1)) + 'Page']();
+	    var h = (0, _controller2.default)().hash.slice(1);
+	    var page = 'show' + (h.charAt(0).toUpperCase() + h.slice(1)) + 'Page';
+	    console.log(page);
+	    _application2.default[page]();
 	  } catch (err) {
+	    console.log(err);
 	    history.replaceState({ page: 1 }, '', '#/error');
-	    _application2.default.showErrorPage();
+	    // Application.showErrorPage();
 	  }
 	};
 	
-	console.dir(checkValidHash);
+	// checkValidHash();
 	
 	window.onpopstate = function (e) {
+	  console.log('popstate');
 	  checkValidHash();
 	};
 	
@@ -358,7 +374,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (MainPageView.__proto__ || Object.getPrototypeOf(MainPageView)).call(this));
 	
-	    _this.rightPictures = (0, _imageView2.default)(_data.AppData.imagesData.rowRight);
+	    _this.rightPictures = (0, _imageView2.default)(_data.AppData.images.rowRight);
 	    return _this;
 	  }
 	
@@ -372,11 +388,11 @@
 	    value: function addElements() {
 	      this.rightPictures.classList.add('rightPictures');
 	
-	      this.element.querySelector('.row-1 .row__content').appendChild((0, _mainSliderView2.default)(_data.AppData.imagesData.mainSlider));
+	      this.element.querySelector('.row-1 .row__content').appendChild((0, _mainSliderView2.default)(_data.AppData.images.mainSlider));
 	      this.element.querySelector('.row-1 .row__content').appendChild(this.rightPictures);
 	
-	      this.element.querySelector('.row-2 .row__image').appendChild((0, _imageView2.default)(_data.AppData.imagesData.row2));
-	      this.element.querySelector('.row-3 .row__image').appendChild((0, _imageView2.default)(_data.AppData.imagesData.row3));
+	      this.element.querySelector('.row-2 .row__image').appendChild((0, _imageView2.default)(_data.AppData.images.row2));
+	      this.element.querySelector('.row-3 .row__image').appendChild((0, _imageView2.default)(_data.AppData.images.row3));
 	    }
 	  }, {
 	    key: 'bindHandlers',
@@ -399,7 +415,7 @@
 	          sliderImages.forEach(function (li, i) {
 	            if (li.classList.contains('animate')) {
 	              try {
-	                _application2.default['show' + sliderData[i].split('.')[0].split('-')[1] + 'Page']();
+	                _application2.default['show' + _data.AppData.images.mainSlider[i].split('.')[0].split('-')[1] + 'Page']();
 	              } catch (err) {
 	                _application2.default.showErrorPage();
 	              }
@@ -825,12 +841,16 @@
 	      albumDataVar = data;
 	    },
 	    get: function get() {
-	      return imagesDataVar;
+	      return albumDataVar;
 	    }
 	  }, {
 	    key: 'images',
 	    set: function set(data) {
 	      imagesDataVar = data;
+	    },
+	    get: function get() {
+	      console.log(imagesDataVar);
+	      return imagesDataVar;
 	    }
 	  }]);
 
@@ -935,11 +955,11 @@
 	      var albumBox = this.element.querySelector('.row-4 .row__image');
 	      var screenImage = this.element.querySelector('.screenImage');
 	
-	      albumBox.appendChild((0, _allAlbumsView2.default)(_data.AppData.albumsData, albumBox));
+	      albumBox.appendChild((0, _allAlbumsView2.default)(_data.AppData.albums, albumBox));
 	      backButton.addEventListener('click', function () {
 	        albumBox.innerHTML = '';
 	        screenImage.innerHTML = '';
-	        albumBox.appendChild((0, _allAlbumsView2.default)(_data.AppData.albumsData, albumBox));
+	        albumBox.appendChild((0, _allAlbumsView2.default)(_data.AppData.albums, albumBox));
 	      });
 	    }
 	  }, {
@@ -1022,7 +1042,8 @@
 	      this.element.addEventListener('click', function (e) {
 	        if (e.target.src) {
 	          _this2.arrData.forEach(function (name, i) {
-	            if (name === e.target.src.split('/')[5]) {
+	            console.log(e.target.src.match(/\/([^\/]*)\/[^\/]*$/)[1]);
+	            if (encodeURIComponent(name) === e.target.src.match(/\/([^\/]*)\/[^\/]*$/)[1]) {
 	              _this2.albumBox.innerHTML = '';
 	              _this2.albumBox.appendChild((0, _albumView2.default)(_this2.data[name]));
 	            }
@@ -1088,6 +1109,7 @@
 	      this.element.addEventListener('click', function (e) {
 	        if (e.target.src) {
 	          _this2.data.forEach(function (img, i) {
+	            console.log(img, e.target.src);
 	            if (img.split('/')[3] === e.target.src.split('/')[6]) {
 	              _this2.Slider.setImgOnClick(i);
 	            }

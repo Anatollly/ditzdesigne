@@ -20,7 +20,8 @@ block content
           h3= errorData
             a.btn.btn-info.btn-lg(href='http://' + host + '/admin/' + currentItem)= 'Reload'
 
-        if currentItem && currentFolder && upload
+        else if currentItem && currentFolder && upload
+          h4= `maximum number of files to upload - ${maxFiles}`
           form(method='post', enctype='multipart/form-data')
             input(type='file', name='uploadFile', multiple)
             input.btn.btn-warning.btn-lg(type='submit', value='Upload')
@@ -33,6 +34,8 @@ block content
             label.btn.btn-danger.btn-lg(for=currentFolder, style={'margin': '1px 0 0 25px'})= 'Delete folder'
               input#currentFolder(type='checkbox', name=currentFolder, style={'margin-left': '5px'})
             if images
+              if uploadImages
+                h4(style={margin: '25px 0 0 25px'})= uploadImages
               ul.row
                 each image in images
                   li.col-3.list-group(style={'margin-top': '20px'})

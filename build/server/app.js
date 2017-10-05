@@ -2,11 +2,12 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multiparty = require('multiparty');
+const urlencode = require('urlencode');
 // const fs = require('fs');
 const rimraf = require('rimraf');
 // const rmdir = require('rmdir');
 // const {currentAlbumsData, currentImagesData} = require('./data');
-const {getPathsOfFiles, delFiles, copyFile, createFolder} = require('./util');
+const {getPathsOfFiles, delFiles, delFilesMin, copyFile, createFolder, resizeImage, checkDir} = require('./util');
 // const scanFolder = require('scan-folder');
 // const data = require('./data');
 
@@ -45,7 +46,9 @@ app.get('/', (req, res) => {
 });
 
 const ALBUMSDIR = 'photo/albums';
+const ALBUMMINDIR = 'photo/albums_min';
 const IMAGESDIR = 'photo/images';
+const MAXFILESUPLOAD = 20;
 let currentAlbumsData;
 let currentImagesData;
 let store;
@@ -56,6 +59,7 @@ const getData = () => {
   currentImagesData = getPathsOfFiles(IMAGESDIR);
   store = Object.assign({}, {albums: currentAlbumsData}, {images: currentImagesData});
   data = {}; // object of data for render
+  console.log('getData');
 };
 
 const rebootData = () => {
@@ -66,9 +70,16 @@ const rebootData = () => {
   }
 };
 
+rebootData();
+
 app.route('/admin/:item?/:folder?/:upload?')
     .all((req, res, next) => {
-      rebootData();
+      console.log(req.method);
+      if (data.errorData) {
+        data.errorData = false;
+        rebootData();
+      }
+      data.currentUrl = urlencode.decode(req.url);
       data.page = 'Admin mode';
       data.host = req.headers.host; // host (localhost:3501)
       data.items = Object.keys(store); // items of menu
@@ -78,52 +89,74 @@ app.route('/admin/:item?/:folder?/:upload?')
       next();
     })
     .get((req, res) => {
+      if (data.currentItem && data.currentFolder) {
+        data.images = store[data.currentItem][data.currentFolder]; // images in folder
+      }
       if (data.currentItem) {
         data.folders = Object.keys(store[data.currentItem]); // folders in item
       }
-      if (data.currentFolder) {
-        data.images = store[data.currentItem][data.currentFolder]; // images in folder
+      if (data.upload) {
+        data.maxFiles = MAXFILESUPLOAD;
       }
       res.render('content', data);
     })
     .post((req, res) => {
-      let toFolder = '/' + data.currentItem + '/' + data.currentFolder;
+      let urlToItem = '/admin/' + data.currentItem;
+      let urlToFolder = urlToItem + '/' + data.currentFolder;
+      let pathToItem = '/photo/' + data.currentItem;
+      let pathToFolder = pathToItem + '/' + data.currentFolder;
       let delData = Object.keys(req.body);
-      let form = new multiparty.Form();
+      const form = new multiparty.Form();
 
-      if (req.url === '/admin/' + data.currentItem && req.method === 'POST') {
-        createFolder(path.resolve() + '/photo/' + data.currentItem + '/' + req.body.nameFolder);
-        res.redirect('/admin/' + data.currentItem);
+      if (data.currentUrl === urlToItem) {
+        createFolder(path.resolve() + pathToItem + '/' + req.body.nameFolder, () => {
+          createFolder(path.resolve() + '/' + ALBUMMINDIR + '/' + req.body.nameFolder, () => {
+            rebootData();
+            res.redirect(urlToItem);
+          });
+        });
       }
 
-      if (req.url === '/admin' + toFolder && req.method === 'POST') {
+      if (data.currentUrl === urlToFolder) {
         if (delData[0] === data.currentFolder) {
-          rimraf.sync('photo' + toFolder);
-          res.redirect('/admin/' + data.currentItem);
+          rimraf(pathToFolder.slice(1), () => {
+            rimraf(ALBUMMINDIR + '/' + data.currentFolder, () => {
+              rebootData();
+              res.redirect(urlToItem);
+            });
+          });
         } else {
-          delFiles(delData);
-          res.redirect('/admin' + toFolder);
+          delFiles(delData, () => {
+            delFilesMin(delData, () => {
+              rebootData();
+              res.redirect(urlToFolder);
+            });
+          });
         }
       }
 
-      if (req.url === '/admin' + toFolder + '/upload' && req.method === 'POST') {
+      if (data.currentUrl === urlToFolder + '/upload') {
         form.parse(req, (err, fields, files) => {
           if (err) {
             throw new Error(`An error occurred while uploading files. Error: ${err}`);
           } else {
-            let n = 1;
-            files.uploadFile.forEach((name, i) => {
+            let n = 0;
+            files.uploadFile.forEach((name, i, arr) => {
               let sourceFile = name.path;
-              let targetFile = path.resolve() + '/photo' + toFolder + '/' + name.originalFilename;
+              let targetFile = path.resolve() + pathToFolder + '/' + name.originalFilename;
+              let targetFileForMinImg = path.resolve() + '/photo/albums_min/' + data.currentFolder + '/' + name.originalFilename;
               copyFile(sourceFile, targetFile, (error) => {
                 if (error) {
                   throw new Error(`An error occurred while copying file ${name.originalFilename}. Error: ${error}`);
                 } else {
-                  if (n === files.uploadFile.length) {
-                    res.redirect('/admin' + toFolder);
-                  } else {
+                  resizeImage(sourceFile, targetFileForMinImg, () => {
                     n++;
-                  }
+                    if (n === arr.length) {
+                      rebootData();
+                      data.uploadImages = `${n} files uploaded`;
+                      res.redirect(urlToFolder);
+                    }
+                  });
                 }
               });
             });
@@ -143,3 +176,48 @@ app.get('/images', (req, res) => {
 app.listen(3501, () => {
   console.log('App listening on port 3501!');
 });
+
+
+// const handlePostRequest = () => {
+//   return new Promise((resolve, reject) => {
+//     if (req.url === urlToItem) {
+//       createFolder(path.resolve() + pathToItem + '/' + req.body.nameFolder);
+//     } else if (req.url === urlToFolder) {
+//       if (delData[0] === data.currentFolder) {
+//         rimraf.sync(pathToFolder.slice(1));
+//       } else {
+//         delFiles(delData);
+//       }
+//     } else if (req.url === urlToFolder + '/upload') {
+//       form.parse(req, (err, fields, files) => {
+//         if (err) {
+//           reject(`An error occurred while uploading files. Error: ${err}`);
+//         } else {
+//           let n = 1;
+//           files.uploadFile.forEach((name, i) => {
+//             let sourceFile = name.path;
+//             let targetFile = path.resolve() + pathToFolder + '/' + name.originalFilename;
+//             copyFile(sourceFile, targetFile, (error) => {
+//               if (error) {
+//                 reject(`An error occurred while copying file ${name.originalFilename}. Error: ${error}`);
+//               } else {
+//                 if (n === files.uploadFile.length) {
+//                   console.log(n + ' finish');
+//                   resolve();
+//                 } else {
+//                   console.log(n);
+//                   n++;
+//                 }
+//               }
+//             });
+//           });
+//         }
+//       });
+//     }
+//   });
+// };
+//
+// handlePostRequest()
+//     .then(rebootData)
+//     .then(() => res.redirect(urlToFolder))
+//     .catch();
