@@ -67,6 +67,12 @@ gulp.task('clean', function() {
   return del(['build/*']);
 });
 
+gulp.task('font', function() {
+  return gulp.src('frontend/fonts/*.*', {since: gulp.lastRun('font')})
+    .pipe(newer('build/frontend/fonts/'))
+    .pipe(gulp.dest('build/frontend/fonts/'));
+});
+
 gulp.task('html', function() {
   return gulp.src('frontend/index.html', {since: gulp.lastRun('html')})
     .pipe(newer('build'))
@@ -96,7 +102,7 @@ gulp.task('appServer', function() {
     .pipe(gulp.dest('build/server/'));
 });
 
-gulp.task('build', gulp.series('clean', 'html', 'styles', 'scripts', 'img', 'copyPhoto', 'appServer'));
+gulp.task('build', gulp.series('clean', 'font', 'html', 'styles', 'scripts', 'img', 'copyPhoto', 'appServer'));
 
 gulp.task('watch', function() {
   gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
