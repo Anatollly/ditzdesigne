@@ -67,7 +67,7 @@ const resizeImage = (source, target, cb) => {
   if (!fs.existsSync(target)) {
     Jimp.read(source)
         .then((img) => {
-          img.resize(256, 256)            // resize
+          img.cover(256, 256)            // resize
               .quality(60)                // set JPEG quality
               .write(target);             // save
         })

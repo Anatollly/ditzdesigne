@@ -327,6 +327,14 @@
 	  mainElement.innerHTML = '';
 	  mainElement.appendChild(element);
 	};
+	
+	var getImageName = exports.getImageName = function getImageName(stringPath) {
+	  return decodeURIComponent(stringPath).match(/([^\/]*.[jpg|png|jpeg])$/)[1];
+	};
+	
+	var getAlbumName = exports.getAlbumName = function getAlbumName(stringPath) {
+	  return decodeURIComponent(stringPath.match(/\/([^\/]*)\/[^\/]*$/)[1]);
+	};
 
 /***/ }),
 /* 3 */
@@ -704,13 +712,13 @@
 	  function AbstractSliderView(data) {
 	    _classCallCheck(this, AbstractSliderView);
 	
-	    var _this = _possibleConstructorReturn(this, (AbstractSliderView.__proto__ || Object.getPrototypeOf(AbstractSliderView)).call(this));
+	    var _this = _possibleConstructorReturn(this, (AbstractSliderView.__proto__ || Object.getPrototypeOf(AbstractSliderView)).call(this, data));
 	
 	    _this.data = data;
 	    _this.sliderBox = document.createElement('div');
 	    _this.arrowRight = document.createElement('a');
 	    _this.arrowLeft = document.createElement('a');
-	
+	    console.log('this: ', _this);
 	    _this.i = 0;
 	    return _this;
 	  }
@@ -1042,8 +1050,7 @@
 	      this.element.addEventListener('click', function (e) {
 	        if (e.target.src) {
 	          _this2.arrData.forEach(function (name, i) {
-	            console.log(e.target.src.match(/\/([^\/]*)\/[^\/]*$/)[1]);
-	            if (encodeURIComponent(name) === e.target.src.match(/\/([^\/]*)\/[^\/]*$/)[1]) {
+	            if (name === (0, _util.getAlbumName)(e.target.src)) {
 	              _this2.albumBox.innerHTML = '';
 	              _this2.albumBox.appendChild((0, _albumView2.default)(_this2.data[name]));
 	            }
@@ -1078,6 +1085,8 @@
 	
 	var _screenSliderView2 = _interopRequireDefault(_screenSliderView);
 	
+	var _util = __webpack_require__(2);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1094,23 +1103,35 @@
 	
 	    var _this = _possibleConstructorReturn(this, (AlbumView.__proto__ || Object.getPrototypeOf(AlbumView)).call(this, data));
 	
+	    console.log('data: ', data);
 	    _this.data = data;
+	    console.log('data AlbumView: ', _this.data);
 	    _this.screenImage = document.querySelector('.screenImage');
-	    _this.Slider = new _screenSliderView2.default(_this.data);
-	    _this.screenImage.appendChild(_this.Slider.element);
+	    // this.Slider = new ScreenSliderView(this.data);
+	    // this.screenImage.appendChild(this.Slider.element);
 	    return _this;
 	  }
 	
 	  _createClass(AlbumView, [{
+	    key: 'getBigImagesData',
+	    value: function getBigImagesData() {
+	      this.bigImages = this.data.map(function (item) {
+	        return item.replace(/albums_min/, 'albums');
+	      });
+	    }
+	  }, {
 	    key: 'bindHandlers',
 	    value: function bindHandlers() {
 	      var _this2 = this;
 	
+	      this.getBigImagesData();
+	      this.Slider = new _screenSliderView2.default(this.bigImages);
+	      this.screenImage.appendChild(this.Slider.element);
 	      this.element.addEventListener('click', function (e) {
 	        if (e.target.src) {
 	          _this2.data.forEach(function (img, i) {
-	            console.log(img, e.target.src);
-	            if (img.split('/')[3] === e.target.src.split('/')[6]) {
+	            if ((0, _util.getImageName)(img) === (0, _util.getImageName)(e.target.src)) {
+	              console.log('imgonclick: ', i);
 	              _this2.Slider.setImgOnClick(i);
 	            }
 	          });
@@ -1318,13 +1339,30 @@
 	  function ContactsPageView() {
 	    _classCallCheck(this, ContactsPageView);
 	
-	    return _possibleConstructorReturn(this, (ContactsPageView.__proto__ || Object.getPrototypeOf(ContactsPageView)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (ContactsPageView.__proto__ || Object.getPrototypeOf(ContactsPageView)).call(this));
+	
+	    _this.head = document.querySelector('head');
+	    return _this;
 	  }
 	
 	  _createClass(ContactsPageView, [{
 	    key: 'getMarkup',
 	    value: function getMarkup() {
-	      return '<div class="row contactsPage">\n      <div class="row__caption">\n        <div class="name">\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B</div>\n        <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>\n      </div>\n    </div>';
+	      return '<div class="row contactsPage">\n      <div class="row__caption">\n        <div class="name">\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B</div>\n        <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>\n      </div>\n      <div id="contacts"></div>\n    </div>';
+	    }
+	  }, {
+	    key: 'bindHandlers',
+	    value: function bindHandlers() {
+	      var oldScript = document.querySelector('head script');
+	      if (oldScript) {
+	        console.log('oldScript: ', oldScript);
+	        this.head.removeChild(oldScript);
+	      }
+	      var script = document.createElement('script');
+	      script.type = 'text/javascript';
+	      script.charset = 'utf-8';
+	      script.src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A9d921e30fe6335c9e8fd994117785845e3e28e4a3a82ff7b268c2e213e296d4b&amp;height=326&amp;id=contacts';
+	      this.head.appendChild(script);
 	    }
 	  }]);
 	

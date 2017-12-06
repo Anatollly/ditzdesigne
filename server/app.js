@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(pathRoot + 'index.html'));
 });
 
-const ALBUMSDIR = 'photo/albums';
+// const ALBUMSDIR = 'photo/albums';
 const ALBUMMINDIR = 'photo/albums_min';
 const IMAGESDIR = 'photo/images';
 const MAXFILESUPLOAD = 20;
@@ -55,7 +55,7 @@ let store;
 let data;
 
 const getData = () => {
-  currentAlbumsData = getPathsOfFiles(ALBUMSDIR);
+  currentAlbumsData = getPathsOfFiles(ALBUMMINDIR);
   currentImagesData = getPathsOfFiles(IMAGESDIR);
   store = Object.assign({}, {albums: currentAlbumsData}, {images: currentImagesData});
   data = {}; // object of data for render
