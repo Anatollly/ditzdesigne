@@ -1,6 +1,6 @@
 import AbstractView from './abstract-view';
 import albumView from './album-view';
-import {getImageS} from '../util';
+import {getImageS, getAlbumName} from '../util';
 
 class AllAlbumsView extends AbstractView {
 
@@ -29,8 +29,7 @@ class AllAlbumsView extends AbstractView {
     this.element.addEventListener('click', (e) => {
       if (e.target.src) {
         this.arrData.forEach((name, i) => {
-          console.log(e.target.src.match(/\/([^\/]*)\/[^\/]*$/)[1]);
-          if (encodeURIComponent(name) === e.target.src.match(/\/([^\/]*)\/[^\/]*$/)[1]) {
+          if (name === getAlbumName(e.target.src)) {
             this.albumBox.innerHTML = '';
             this.albumBox.appendChild(albumView(this.data[name]));
           }

@@ -29,3 +29,11 @@ export const displayElement = (element) => {
   mainElement.innerHTML = '';
   mainElement.appendChild(element);
 };
+
+export const getImageName = (stringPath) => (
+  decodeURIComponent(stringPath).match(/([^\/]*.[jpg|png|jpeg])$/)[1]
+);
+
+export const getAlbumName = (stringPath) => (
+  decodeURIComponent(stringPath.match(/\/([^\/]*)\/[^\/]*$/)[1])
+);

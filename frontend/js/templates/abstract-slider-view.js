@@ -4,12 +4,12 @@ import AbstractView from './abstract-view';
 export default class AbstractSliderView extends AbstractView {
 
   constructor(data) {
-    super();
+    super(data);
     this.data = data;
     this.sliderBox = document.createElement('div');
     this.arrowRight = document.createElement('a');
     this.arrowLeft = document.createElement('a');
-
+    console.log('this: ', this);
     this.i = 0;
   }
 
