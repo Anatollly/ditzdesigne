@@ -20,13 +20,12 @@ class ContactsPageView extends AbstractPageView {
   bindHandlers() {
     const oldScript = document.querySelector('head script');
     if (oldScript) {
-      console.log('oldScript: ', oldScript);
       this.head.removeChild(oldScript);
     }
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.charset = 'utf-8';
-    script.src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A9d921e30fe6335c9e8fd994117785845e3e28e4a3a82ff7b268c2e213e296d4b&amp;height=326&amp;id=contacts';
+    script.src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A9d921e30fe6335c9e8fd994117785845e3e28e4a3a82ff7b268c2e213e296d4b&amp;height=380&amp;id=contacts';
     this.head.appendChild(script);
   }
 

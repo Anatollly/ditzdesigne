@@ -18,62 +18,62 @@ export default class Application {
 
   static showMainPage() {
     displayElement(mainPageView());
-    hashController().hash = '/main';
+    // hashController().hash = '/main';
   }
 
   static showAboutUsPage() {
     displayElement(aboutUsPageView());
-    hashController().hash = '/aboutUs';
+    // hashController().hash = '/aboutUs';
   }
 
   static showPortfolioPage() {
     displayElement(portfolioPageView());
-    hashController().hash = '/portfolio';
+    // hashController().hash = '/portfolio';
   }
 
   static showServicesPage() {
     displayElement(servicesPageView());
-    hashController().hash = '/services';
+    // hashController().hash = '/services';
   }
 
   static showTechnologiesPage() {
     displayElement(technologiesPageView());
-    hashController().hash = '/technologies';
+    // hashController().hash = '/technologies';
   }
 
   static showContactsPage() {
     displayElement(contactsPageView());
-    hashController().hash = '/contacts';
+    // hashController().hash = '/contacts';
   }
 
   static showBestsellerPage() {
     displayElement(bestsellerPageView());
-    hashController().hash = '/bestseller';
+    // hashController().hash = '/bestseller';
   }
 
   static showInterTextilePage() {
     displayElement(interTextilePageView());
-    hashController().hash = '/interTextile';
+    // hashController().hash = '/interTextile';
   }
 
   static showSharesPage() {
     displayElement(sharesPageView());
-    hashController().hash = '/shares';
+    // hashController().hash = '/shares';
   }
 
   static showTextileForRestPage() {
     displayElement(textileForRestPageView());
-    hashController().hash = '/textileForRest';
+    // hashController().hash = '/textileForRest';
   }
 
   static showUniformsPage() {
     displayElement(uniformsPageView());
-    hashController().hash = '/uniforms';
+    // hashController().hash = '/uniforms';
   }
 
   static showErrorPage() {
     displayElement(errorPageView());
-    hashController().hash = '/error';
+    // hashController().hash = '/error';
   }
 
 }

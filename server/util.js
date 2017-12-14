@@ -80,6 +80,24 @@ const resizeImage = (source, target, cb) => {
   }
 };
 
+// const resizeImageLogo = (source, target, cb) => {
+//
+//   if (!fs.existsSync(target)) {
+//     Jimp.read(source)
+//         .then((img) => {
+//           img.cover(256, 256)            // resize
+//               .quality(60)                // set JPEG quality
+//               .write(target);             // save
+//         })
+//         .then(() => {
+//           cb();
+//         })
+//         .catch((err) => {
+//           console.error(err);
+//         });
+//   }
+// };
+
 const checkDir = (sourceDir, targetDir, cb) => {
   fs.readdir(sourceDir, (err, folders) => {
     if (err) {
@@ -137,6 +155,7 @@ module.exports = {
   copyFile,
   createFolder,
   resizeImage,
+  // resizeImageLogo,
   checkDir
 };
 

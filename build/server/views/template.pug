@@ -5,7 +5,7 @@ head
   link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous")
 body
   .container-fluid
-    h1
+    h1(style={'margin': '20px'})
       a(href='/admin')= page
     hr
     ul.nav.nav-pills
@@ -14,6 +14,7 @@ body
           a.nav-link(href='http://' + host + '/admin/' + item)= item
     hr
     block content
+    a.btn.btn-info.btn-lg(href='http://' + host + '/login')= 'Logout'
 
 
   script(src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous")
