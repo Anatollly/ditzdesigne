@@ -1,3 +1,7 @@
+import hashController from './controller';
+
+const mainElement = document.querySelector('.content');
+
 export const getImageS = (data, name = '') => {
   const ulImage = document.createElement('ul');
   data.forEach((img, i) => {
@@ -23,8 +27,6 @@ export const getElementFromTemplate = (nodeElement) => {
   return node;
 };
 
-const mainElement = document.querySelector('.content');
-
 export const displayElement = (element) => {
   mainElement.innerHTML = '';
   mainElement.appendChild(element);
@@ -37,3 +39,7 @@ export const getImageName = (stringPath) => (
 export const getAlbumName = (stringPath) => (
   decodeURIComponent(stringPath.match(/\/([^\/]*)\/[^\/]*$/)[1])
 );
+
+export const goToPage = (page) => {
+  hashController().hash = page;
+};

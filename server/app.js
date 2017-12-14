@@ -8,11 +8,21 @@ const rimraf = require('rimraf');
 // const rmdir = require('rmdir');
 // const {currentAlbumsData, currentImagesData} = require('./data');
 const {getPathsOfFiles, delFiles, delFilesMin, copyFile, createFolder, resizeImage, checkDir} = require('./util');
+const {Login} = require('./login');
 // const scanFolder = require('scan-folder');
 // const data = require('./data');
 
 const app = express();
-
+const AdminLogin = new Login();
+// const ALBUMSDIR = 'photo/albums';
+const ALBUMMINDIR = 'photo/albums_min';
+const IMAGESDIR = 'photo/images';
+const MAXFILESUPLOAD = 20;
+let currentAlbumsData;
+let currentImagesData;
+let store;
+let data;
+const dataLogin = {};
 let pathRoot = '';
 
 if (app.get('env') === 'development') {
@@ -45,15 +55,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(pathRoot + 'index.html'));
 });
 
-// const ALBUMSDIR = 'photo/albums';
-const ALBUMMINDIR = 'photo/albums_min';
-const IMAGESDIR = 'photo/images';
-const MAXFILESUPLOAD = 20;
-let currentAlbumsData;
-let currentImagesData;
-let store;
-let data;
-
 const getData = () => {
   currentAlbumsData = getPathsOfFiles(ALBUMMINDIR);
   currentImagesData = getPathsOfFiles(IMAGESDIR);
@@ -72,21 +73,46 @@ const rebootData = () => {
 
 rebootData();
 
+app.route('/login')
+    .all((req, res, next) => {
+      dataLogin.host = req.headers.host;
+      next();
+    })
+    .get((req, res) => {
+      AdminLogin.logout();
+      res.render('login', dataLogin);
+      dataLogin.errorLogin = false;
+    })
+    .post((req, res) => {
+      const {user, password} = req.body;
+      AdminLogin.signin(user, password);
+      if (AdminLogin.checkLogin()) {
+        dataLogin.errorLogin = false;
+        res.redirect('/admin');
+      } else {
+        dataLogin.errorLogin = true;
+        res.redirect('/login');
+      }
+    });
+
 app.route('/admin/:item?/:folder?/:upload?')
     .all((req, res, next) => {
-      console.log(req.method);
-      if (data.errorData) {
-        data.errorData = false;
-        rebootData();
+      if (!(AdminLogin.checkLogin())) {
+        res.redirect('/login');
+      } else {
+        if (data.errorData) {
+          data.errorData = false;
+          rebootData();
+        }
+        data.currentUrl = urlencode.decode(req.url);
+        data.page = 'Admin mode';
+        data.host = req.headers.host; // host (localhost:3501)
+        data.items = Object.keys(store); // items of menu
+        data.currentItem = req.params.item; // current item
+        data.currentFolder = req.params.folder; // current folder
+        data.upload = req.params.upload;
+        next();
       }
-      data.currentUrl = urlencode.decode(req.url);
-      data.page = 'Admin mode';
-      data.host = req.headers.host; // host (localhost:3501)
-      data.items = Object.keys(store); // items of menu
-      data.currentItem = req.params.item; // current item
-      data.currentFolder = req.params.folder; // current folder
-      data.upload = req.params.upload;
-      next();
     })
     .get((req, res) => {
       if (data.currentItem && data.currentFolder) {
@@ -101,6 +127,9 @@ app.route('/admin/:item?/:folder?/:upload?')
       res.render('content', data);
     })
     .post((req, res) => {
+      if (req.body.logout === 'Logout') {
+        res.redirect('/login');
+      }
       let urlToItem = '/admin/' + data.currentItem;
       let urlToFolder = urlToItem + '/' + data.currentFolder;
       let pathToItem = '/photo/' + data.currentItem;
@@ -110,15 +139,22 @@ app.route('/admin/:item?/:folder?/:upload?')
 
       if (data.currentUrl === urlToItem) {
         createFolder(path.resolve() + pathToItem + '/' + req.body.nameFolder, () => {
-          createFolder(path.resolve() + '/' + ALBUMMINDIR + '/' + req.body.nameFolder, () => {
+          if (data.currentItem === 'images') {
             rebootData();
             res.redirect(urlToItem);
-          });
+          } else {
+            createFolder(path.resolve() + '/' + ALBUMMINDIR + '/' + req.body.nameFolder, () => {
+              rebootData();
+              res.redirect(urlToItem);
+            });
+          }
         });
       }
 
       if (data.currentUrl === urlToFolder) {
-        if (delData[0] === data.currentFolder) {
+        if (delData.length === 0) {
+          res.redirect(urlToFolder);
+        } else if (delData[0] === data.currentFolder) {
           rimraf(pathToFolder.slice(1), () => {
             rimraf(ALBUMMINDIR + '/' + data.currentFolder, () => {
               rebootData();
@@ -141,6 +177,14 @@ app.route('/admin/:item?/:folder?/:upload?')
             throw new Error(`An error occurred while uploading files. Error: ${err}`);
           } else {
             let n = 0;
+            const checkEnd = (array) => {
+              n++;
+              if (n === array.length) {
+                rebootData();
+                data.uploadImages = `${n} files uploaded`;
+                res.redirect(urlToFolder);
+              }
+            };
             files.uploadFile.forEach((name, i, arr) => {
               let sourceFile = name.path;
               let targetFile = path.resolve() + pathToFolder + '/' + name.originalFilename;
@@ -149,14 +193,13 @@ app.route('/admin/:item?/:folder?/:upload?')
                 if (error) {
                   throw new Error(`An error occurred while copying file ${name.originalFilename}. Error: ${error}`);
                 } else {
-                  resizeImage(sourceFile, targetFileForMinImg, () => {
-                    n++;
-                    if (n === arr.length) {
-                      rebootData();
-                      data.uploadImages = `${n} files uploaded`;
-                      res.redirect(urlToFolder);
-                    }
-                  });
+                  if (data.currentItem === 'images') {
+                    checkEnd(arr);
+                  } else {
+                    resizeImage(sourceFile, targetFileForMinImg, () => {
+                      checkEnd(arr);
+                    });
+                  }
                 }
               });
             });

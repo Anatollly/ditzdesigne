@@ -78,21 +78,38 @@ body
             background: url(../img/ikonkisozseti.png) -120px 0px no-repeat
             background-size: 340% auto
 
-
-  .main-menu
+  .wrap-menu
     min-height: 50px
     display: flex
     flex-wrap: wrap
-    justify-content: space-between
+    // justify-content: space-between
     align-items: center
-    border-top: 1px dashed black
-    border-bottom: 1px dashed black
     sm(display, none)
     md(justify-content, space-around)
 
-    li
-      cursor: pointer;
-      md(margin, 0 40px)
+    .needle
+      background: url(../img/needle.png) 0 -6px no-repeat
+      background-size: 100%
+      width: 9%
+      height: 52px
+      md(display, none)
+
+    .main-menu
+      min-height: 50px
+      width: 91%
+      display: flex
+      flex-wrap: wrap
+      justify-content: space-between
+      align-items: center
+      border-top: 1px dashed black
+      border-bottom: 1px dashed black
+      sm(display, none)
+      md(justify-content, space-around)
+      md(width, 100%)
+
+      li
+        cursor: pointer;
+        md(margin, 0 40px)
 
 .content
   width-content()
@@ -143,12 +160,24 @@ body
 
           img
             display: block;
+            margin-left: auto;
+            margin-right: auto
 
       &-threeImg li
         &:nth-child(2)
           col-6()
           col-sm-12()
           sm(order, -1)
+
+      &-sixImg ul
+        justify-content: flex-start;
+        margin-left: -10px
+        margin-right: -10px
+
+        li
+          padding: 10px
+          col-2()
+          col-sm-4()
 
       &-album ul
           justify-content: flex-start;

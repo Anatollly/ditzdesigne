@@ -12,7 +12,8 @@ class MainPageView extends AbstractPageView {
   }
 
   getMarkup() {
-    return `<div class="row row-1">
+    return `
+    <div class="row row-1">
       <div class="row__content">
       </div>
     </div>
@@ -31,7 +32,16 @@ class MainPageView extends AbstractPageView {
       </div>
       <div class="row__image row__image-threeImg">
       </div>
-    </div>`;
+    </div>
+    <div class="row row-4">
+      <div class="row__caption">
+        <div class="name">Нам доверяют</div>
+        <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>
+      </div>
+      <div class="row__image row__image-sixImg">
+      </div>
+    </div>
+    `;
   }
 
   addElements() {
@@ -39,9 +49,10 @@ class MainPageView extends AbstractPageView {
 
     this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(AppData.images.mainSlider));
     this.element.querySelector('.row-1 .row__content').appendChild(this.rightPictures);
-
+    console.log('AppData: ', AppData.images.row2);
     this.element.querySelector('.row-2 .row__image').appendChild(imageView(AppData.images.row2));
     this.element.querySelector('.row-3 .row__image').appendChild(imageView(AppData.images.row3));
+    this.element.querySelector('.row-4 .row__image').appendChild(imageView(AppData.images.logos));
   }
 
   bindHandlers() {
