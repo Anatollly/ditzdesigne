@@ -9,7 +9,6 @@ export default class AbstractSliderView extends AbstractView {
     this.sliderBox = document.createElement('div');
     this.arrowRight = document.createElement('a');
     this.arrowLeft = document.createElement('a');
-    console.log('this: ', this);
     this.i = 0;
   }
 

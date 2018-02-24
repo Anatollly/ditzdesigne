@@ -42,11 +42,6 @@ app.set('view engine', 'pug');
 // сейчас app.js берет файлы в ditzdesigne/photo, а браузер - build/photo.
 // в продакшене будет одна директория. ниче не поменяется, но нужно держать в уме
 
-// const auth = express.basicAuth((user, pass, next) => {
-//   const result = (user === 'admin' && pass === 'lollipop');
-//   next(null, result);
-// });
-
 app.use(express.static(path.resolve(pathRoot)));
 app.use(bodyParser.urlencoded({extended: true}));
 // app.use(bodyParser.json()); // ????
@@ -176,33 +171,37 @@ app.route('/admin/:item?/:folder?/:upload?')
           if (err) {
             throw new Error(`An error occurred while uploading files. Error: ${err}`);
           } else {
-            let n = 0;
-            const checkEnd = (array) => {
-              n++;
-              if (n === array.length) {
-                rebootData();
-                data.uploadImages = `${n} files uploaded`;
-                res.redirect(urlToFolder);
-              }
-            };
-            files.uploadFile.forEach((name, i, arr) => {
-              let sourceFile = name.path;
-              let targetFile = path.resolve() + pathToFolder + '/' + name.originalFilename;
-              let targetFileForMinImg = path.resolve() + '/photo/albums_min/' + data.currentFolder + '/' + name.originalFilename;
-              copyFile(sourceFile, targetFile, (error) => {
-                if (error) {
-                  throw new Error(`An error occurred while copying file ${name.originalFilename}. Error: ${error}`);
-                } else {
-                  if (data.currentItem === 'images') {
-                    checkEnd(arr);
-                  } else {
-                    resizeImage(sourceFile, targetFileForMinImg, () => {
-                      checkEnd(arr);
-                    });
-                  }
+            if (files.uploadFile[0].size === 0) {
+              res.redirect(urlToFolder);
+            } else {
+              let n = 0;
+              const checkEnd = (array) => {
+                n++;
+                if (n === array.length) {
+                  rebootData();
+                  data.uploadImages = `${n} files uploaded`;
+                  res.redirect(urlToFolder);
                 }
+              };
+              files.uploadFile.forEach((name, i, arr) => {
+                let sourceFile = name.path;
+                let targetFile = path.resolve() + pathToFolder + '/' + name.originalFilename;
+                let targetFileForMinImg = path.resolve() + '/photo/albums_min/' + data.currentFolder + '/' + name.originalFilename;
+                copyFile(sourceFile, targetFile, (error) => {
+                  if (error) {
+                    throw new Error(`An error occurred while copying file ${name.originalFilename}. Error: ${error}`);
+                  } else {
+                    if (data.currentItem === 'images') {
+                      checkEnd(arr);
+                    } else {
+                      resizeImage(sourceFile, targetFileForMinImg, () => {
+                        checkEnd(arr);
+                      });
+                    }
+                  }
+                });
               });
-            });
+            }
           }
         });
       }
@@ -216,7 +215,9 @@ app.get('/images', (req, res) => {
   res.send(currentImagesData);
 });
 
-app.listen(3501, () => {
+console.log('PORT: ', process.env.PORT);
+
+app.listen(process.env.PORT || 3501, () => {
   console.log('App listening on port 3501!');
 });
 

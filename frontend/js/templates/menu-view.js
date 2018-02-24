@@ -2,8 +2,6 @@ import {menuData, linksData} from '../data/data';
 import Controller from '../controller';
 
 const contr = new Controller();
-console.log(contr);
-console.log(window.history.state);
 
 window.onpopstate = () => {
   console.log('popstate');
@@ -14,9 +12,6 @@ const content = document.querySelector('.content');
 let itemMenu;
 let subMenu;
 let subItemMenu;
-
-console.log(window.location);
-console.log(window.location.pathname);
 
 const getPage = () => {
   content.innerHTML = linksData[window.location.hash.slice(1)];

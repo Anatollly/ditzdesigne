@@ -2,22 +2,30 @@ import hashController from './controller';
 
 const mainElement = document.querySelector('.content');
 
+const createImage = (srcImage, htmlTag, nameImage) => {
+  const domElement = document.createElement(htmlTag);
+  const image = new Image();
+  image.onload = () => {
+    domElement.innerHTML = nameImage || '';
+    domElement.appendChild(image);
+  };
+  image.onerror = () => {
+    domElement.innerHTML = `Error: image-${srcImage} load failure!`;
+  };
+  image.src = srcImage;
+  return domElement;
+};
+
 export const getImageS = (data, name = '') => {
-  const ulImage = document.createElement('ul');
-  data.forEach((img, i) => {
-    let liImage = document.createElement('li');
-    ulImage.appendChild(liImage);
-    let image = new Image();
-    image.onload = () => {
-      liImage.innerHTML = name[i] || '';
-      liImage.appendChild(image);
-    };
-    image.onerror = () => {
-      liImage.innerHTML = `Error: image-${img} load failure!`;
-    };
-    image.src = img;
-  });
-  return ulImage;
+  if (data.length === 1) {
+    return createImage(data[0], 'div', name);
+  } else {
+    const ulImage = document.createElement('ul');
+    data.forEach((img, i) => {
+      ulImage.appendChild(createImage(img, 'li', name[i]));
+    });
+    return ulImage;
+  }
 };
 
 export const getElementFromTemplate = (nodeElement) => {
@@ -33,7 +41,11 @@ export const displayElement = (element) => {
 };
 
 export const getImageName = (stringPath) => (
-  decodeURIComponent(stringPath).match(/([^\/]*.[jpg|png|jpeg])$/)[1]
+  decodeURIComponent(stringPath).match(/([^\/]*.(jpg|png|jpeg))$/)[1]
+);
+
+export const getPageName = (stringPath) => (
+  decodeURIComponent(stringPath).match(/([^\/]*.).(png|jpg|jpeg)$/)[1]
 );
 
 export const getAlbumName = (stringPath) => (

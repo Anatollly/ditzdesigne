@@ -12,8 +12,6 @@ class PortfolioPageView extends AbstractPageView {
       </div>
       <div class="row__image row__image-album">
       </div>
-      <div class="screenImage">
-      </div>
     </div>`;
   }
 
@@ -25,7 +23,6 @@ class PortfolioPageView extends AbstractPageView {
     albumBox.appendChild(allAlbumsView(AppData.albums, albumBox));
     backButton.addEventListener('click', () => {
       albumBox.innerHTML = '';
-      screenImage.innerHTML = '';
       albumBox.appendChild(allAlbumsView(AppData.albums, albumBox));
     });
   }

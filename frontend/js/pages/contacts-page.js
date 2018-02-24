@@ -8,12 +8,26 @@ class ContactsPageView extends AbstractPageView {
   }
 
   getMarkup() {
-    return `<div class="row contactsPage">
+    return `
+    <div class="row contactsPage">
       <div class="row__caption">
         <div class="name">Контакты</div>
         <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>
       </div>
       <div id="contacts"></div>
+      <div class="text">
+        <div class="row__caption row__caption-split">
+          <div class="name"></div>
+          <div class="image"><img src="frontend/img/pic-2.png" alt=""></div>
+        </div>
+        <p class="paragraph paragraph-bottom paragraph-left">
+          По всем вопросам звоните, пишите Whatsapp +7 913 704-77-78<br>
+          или на почту
+          <a href="mailto:ditzdesigne@mail.ru">
+            ditzdesigne@mail.ru
+          </a>
+        </p>
+      </div>
     </div>`;
   }
 

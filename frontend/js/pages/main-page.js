@@ -1,14 +1,17 @@
 import AbstractPageView from './abstract-page-view';
 import imageView from '../templates/image-view';
-import mainSliderView from '../templates/main-slider-view';
 import {AppData} from '../data/data';
+import mainSliderView from '../templates/main-slider-view';
 import Application from '../application';
+import trustUsView from '../templates/trustUs-view';
+import {getPageName, goToPage} from '../util';
+import pages from '../data/pages';
 
 class MainPageView extends AbstractPageView {
 
   constructor() {
     super();
-    this.rightPictures = imageView(AppData.images.rowRight);
+    this.rightPictures = imageView(AppData.images.mainRight);
   }
 
   getMarkup() {
@@ -33,14 +36,7 @@ class MainPageView extends AbstractPageView {
       <div class="row__image row__image-threeImg">
       </div>
     </div>
-    <div class="row row-4">
-      <div class="row__caption">
-        <div class="name">Нам доверяют</div>
-        <div class="image"><img src="frontend/img/pic-1.png" alt=""></div>
-      </div>
-      <div class="row__image row__image-sixImg">
-      </div>
-    </div>
+    <div class="row row-trust"></div>
     `;
   }
 
@@ -49,10 +45,9 @@ class MainPageView extends AbstractPageView {
 
     this.element.querySelector('.row-1 .row__content').appendChild(mainSliderView(AppData.images.mainSlider));
     this.element.querySelector('.row-1 .row__content').appendChild(this.rightPictures);
-    console.log('AppData: ', AppData.images.row2);
-    this.element.querySelector('.row-2 .row__image').appendChild(imageView(AppData.images.row2));
-    this.element.querySelector('.row-3 .row__image').appendChild(imageView(AppData.images.row3));
-    this.element.querySelector('.row-4 .row__image').appendChild(imageView(AppData.images.logos));
+    this.element.querySelector('.row-2 .row__image').appendChild(imageView(AppData.images.mainHit));
+    this.element.querySelector('.row-3 .row__image').appendChild(imageView(AppData.images.mainStock));
+    this.element.querySelector('.row-trust').appendChild(trustUsView());
   }
 
   bindHandlers() {
@@ -63,11 +58,7 @@ class MainPageView extends AbstractPageView {
     bestseller.addEventListener('click', Application.showBestsellerPage);
     shares.addEventListener('click', Application.showSharesPage);
     this.rightPictures.addEventListener('click', (e) => {
-      try {
-        Application['show' + e.target.src.split('/')[4].split('.')[0] + 'Page']();
-      } catch (err) {
-        Application.showErrorPage();
-      }
+      goToPage(pages[getPageName(e.target.src)]);
     });
     slider.addEventListener('click', (e) => {
       if (!(e.target.localName === 'a')) {
