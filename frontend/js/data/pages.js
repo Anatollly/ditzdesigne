@@ -7,6 +7,7 @@ const pages = {
   contacts: '/contacts',
   bestseller: '/bestseller',
   interTextile: '/interTextile',
+  textileForRest: '/textileForRest',
   uniforms: '/uniforms',
   error: '/error'
 };

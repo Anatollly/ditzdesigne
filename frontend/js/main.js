@@ -53,7 +53,6 @@ const checkValidHash = (url) => {
 // checkValidHash();
 
 window.onpopstate = (e) => {
-  console.log('onpopstate');
   checkValidHash();
 };
 

@@ -19,18 +19,6 @@ const webpack = require('gulp-webpack');
 const gcmq = require('gulp-group-css-media-queries');
 const nodemon = require('gulp-nodemon');
 
-console.log(gulp);
-// const watch = require('gulp-watch');
-// const chokidar = require('chokidar');
-
-// const livereload = require('gulp-livereload');
-
-// gulp.watch = watch;
-
-// require('babel-register');
-
-console.log(gulp);
-
 gulp.task('styles', function() {
   return gulp.src('frontend/styles/main.styl')
     .pipe(plumber({

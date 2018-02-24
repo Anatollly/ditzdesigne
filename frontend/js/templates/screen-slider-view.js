@@ -23,6 +23,7 @@ export default class ScreenSliderView extends AbstractSliderView {
       this.images[this.i].classList.remove('animate');
       this.arrowRight.removeEventListener('click', this.showNextImage.bind(this));
       this.arrowLeft.removeEventListener('click', this.showPrevImage.bind(this));
+      this.screenImage.innerHTML = '';
     });
   }
 }

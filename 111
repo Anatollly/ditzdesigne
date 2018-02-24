@@ -1,0 +1,21 @@
+// userName,
+// userLink,
+// locationName,
+// locationLink,
+// description,
+// heartFull,
+// saveFull,
+// postLink,
+// follower,
+// mode,
+// dateCreate,
+// dateView
+//
+// element,
+// heartElement,
+// commentElement,
+// saveElement,
+// textareaElement,
+// imageElement,
+// wrapImgElement
+// dblclickImageElement

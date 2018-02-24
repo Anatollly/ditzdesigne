@@ -4,19 +4,25 @@ import {getImageS, getAlbumName} from '../util';
 
 class AllAlbumsView extends AbstractView {
 
-  constructor(data, box) {
+  constructor(data, albumBox) {
     super();
     this.data = data;
     this.coversOfAlbums = [];
     this.namesOfAlbums = [];
     this.arrData = Object.keys(this.data);
-    this.albumBox = box;
+    this.albumBox = albumBox;
   }
 
   getDataOfAlbum() {
     for (let i = 0; i < this.arrData.length; i++) {
-      this.coversOfAlbums.push(this.data[this.arrData[i]][0]);
-      this.namesOfAlbums.push(`<div>${this.arrData[i]}</div>`);
+      if (!(
+        this.arrData[i] === 'interTextil'
+        || this.arrData[i] === 'textileForRest'
+        || this.arrData[i] === 'uniforms'
+      )) {
+        this.coversOfAlbums.push(this.data[this.arrData[i]][0]);
+        this.namesOfAlbums.push(`<div>${this.arrData[i]}</div>`);
+      }
     }
   }
 

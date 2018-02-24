@@ -28,8 +28,22 @@ body
   font-family: segoe
   width: 100%
   font-size: 22px
-  // background: url(/img/pic-3.png) repeat
+  // background: url(../img/pic-3.png) repeat
   // background-color: white
+
+.needle
+  display: inline;
+  background: url(../img/needle.png) 0 -6px no-repeat
+  background-size: 100%
+  width: 9%
+  height: 52px
+  md(display, none)
+
+  &__paragraph
+    width: 6%
+    height: 30px
+    // float: left;
+    display: inline-block;
 
 .header
   width-content()
@@ -60,23 +74,12 @@ body
           display: flex;
           flex-wrap: nowrap;
           justify-content: space-between;
+          flex-basis: 150px
 
           li
             flex-basis: 50px
             height: 50px
             cursor: pointer;
-
-          #vk
-            background: url(../img/ikonkisozseti.png) 0px 0px no-repeat
-            background-size: 340%
-
-          #ig
-            background: url(../img/ikonkisozseti.png) -60px 0px no-repeat
-            background-size: 340% auto
-
-          #fb
-            background: url(../img/ikonkisozseti.png) -120px 0px no-repeat
-            background-size: 340% auto
 
   .wrap-menu
     min-height: 50px
@@ -86,13 +89,6 @@ body
     align-items: center
     sm(display, none)
     md(justify-content, space-around)
-
-    .needle
-      background: url(../img/needle.png) 0 -6px no-repeat
-      background-size: 100%
-      width: 9%
-      height: 52px
-      md(display, none)
 
     .main-menu
       min-height: 50px
@@ -139,6 +135,9 @@ body
       align-items: center
       flex-wrap: nowrap;
 
+      &-split
+        margin-top: 30px;
+
       div
         col()
         flex-basis: 300px
@@ -182,6 +181,28 @@ body
       &-album ul
           justify-content: flex-start;
 
+    .text
+      font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+      font-size: 22px;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: 400;
+      line-height: 30px;
+      font-stretch: expanded;
+      text-align: center;
+
+      .paragraph
+        margin 40px 0;
+
+        &-bottom
+          font-family: segoe
+
+        &-right
+          text-align: right;
+
+        &-left
+          text-align: left;
+
 .screenImage
   display: none;
   position: fixed;
@@ -213,6 +234,18 @@ body
 
   &__imgSize
     display: block;
+
+  div
+    display: block;
+
+    img
+      display: block;
+      position: absolute;
+      margin: auto;
+      left: 0;
+      top: 0;
+      bottom: 0
+      right: 0;
 
   ul
 
