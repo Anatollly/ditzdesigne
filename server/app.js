@@ -217,7 +217,7 @@ app.get('/images', (req, res) => {
 
 console.log('PORT: ', process.env.PORT);
 
-app.listen(process.env.PORT || 3501, () => {
+app.listen(process.env.PORT || 80, () => {
   console.log('App listening on port 3501!');
 });
 
