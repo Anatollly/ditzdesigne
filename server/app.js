@@ -21,14 +21,10 @@ let data;
 const dataLogin = {};
 let pathRoot = '';
 
-console.log('------', app.get('env'));
-
 if (app.get('env') === 'development') {
   pathRoot = 'build/';
 }
 
-console.log('pathRoot: ', pathRoot);
-console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
 console.log('__dirname: ', __dirname);
 console.log('path resolve: ', path.resolve());
 
@@ -214,8 +210,6 @@ app.get('/images', (req, res) => {
   res.send(currentImagesData);
 });
 
-console.log('PORT: ', process.env.PORT);
-
-app.listen(process.env.PORT || 3501, () => {
-  console.log('App listening on port 3501!');
+app.listen(process.env.PORT || 80, () => {
+  console.log('App listening on port 80!');
 });
