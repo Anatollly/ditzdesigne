@@ -51,9 +51,19 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest('build/frontend/js/'));
 });
 
-gulp.task('clean', function() {
-  return del(['build/*']);
+gulp.task('cleanFrontend', function() {
+  return del(['build/frontend/*']);
 });
+
+gulp.task('cleanServer', function() {
+  return del(['build/server/*']);
+});
+
+gulp.task('cleanHTML', function() {
+  return del(['build/index.html']);
+});
+
+gulp.task('clean',  gulp.parallel('cleanFrontend', 'cleanServer', 'cleanHTML'));
 
 gulp.task('font', function() {
   return gulp.src('frontend/fonts/*.*', {since: gulp.lastRun('font')})
@@ -77,27 +87,27 @@ gulp.task('delPhoto', function() {
   return del(['build/photo/*'])
 })
 
-gulp.task('copyPhoto', function() {
-  return gulp.src('photo/**')
-    .pipe(newer('build/photo/'))
-    .pipe(gulp.dest('build/photo/'));
-});
+// gulp.task('copyPhoto', function() {
+//   return gulp.src('photo/**')
+//     .pipe(newer('build/photo/'))
+//     .pipe(gulp.dest('build/photo/'));
+// });
 
-gulp.task('photo', gulp.series('delPhoto', 'copyPhoto'));
+// gulp.task('photo', gulp.series('delPhoto', 'copyPhoto'));
 
 gulp.task('appServer', function() {
   return gulp.src('server/**/*.*')
     .pipe(gulp.dest('build/server/'));
 });
 
-gulp.task('build', gulp.series('clean', 'font', 'html', 'styles', 'scripts', 'img', 'copyPhoto', 'appServer'));
+gulp.task('build', gulp.series('clean', 'font', 'html', 'styles', 'scripts', 'img', 'appServer'));
 
 gulp.task('watch', function() {
   gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
   gulp.watch('frontend/js/**/*.*', gulp.series('scripts'));
   gulp.watch('frontend/*.html', gulp.series('html'));
   gulp.watch('server/**/*.*', gulp.series('appServer'));
-  gulp.watch('photo/**/*.*', { delay: 5000 }, gulp.series('photo'));
+  // gulp.watch('photo/**/*.*', { delay: 5000 }, gulp.series('photo'));
 });
 
 gulp.task('serve', function () {

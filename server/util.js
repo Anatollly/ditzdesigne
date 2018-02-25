@@ -1,14 +1,13 @@
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const Jimp = require('jimp');
-// const resizeImage = require('resize-image');
 
 const getPathsOfFiles = (dir) => {
   let dirData = {};
-  if (fs.existsSync(dir)) {
-    let folders = fs.readdirSync(dir);
+  if (fs.existsSync('build/' + dir)) {
+    let folders = fs.readdirSync('build/' + dir);
     folders.forEach((folderName) => {
-      let files = fs.readdirSync(dir + '/' + folderName);
+      let files = fs.readdirSync('build/' + dir + '/' + folderName);
       if (files.length === 0) {
         dirData[folderName] = [];
       } else {
@@ -67,9 +66,9 @@ const resizeImage = (source, target, cb) => {
   if (!fs.existsSync(target)) {
     Jimp.read(source)
         .then((img) => {
-          img.cover(256, 256)            // resize
-              .quality(60)                // set JPEG quality
-              .write(target);             // save
+          img.cover(256, 256) // resize
+              .quality(60) // set JPEG quality
+              .write(target); // save
         })
         .then(() => {
           cb();
@@ -79,24 +78,6 @@ const resizeImage = (source, target, cb) => {
         });
   }
 };
-
-// const resizeImageLogo = (source, target, cb) => {
-//
-//   if (!fs.existsSync(target)) {
-//     Jimp.read(source)
-//         .then((img) => {
-//           img.cover(256, 256)            // resize
-//               .quality(60)                // set JPEG quality
-//               .write(target);             // save
-//         })
-//         .then(() => {
-//           cb();
-//         })
-//         .catch((err) => {
-//           console.error(err);
-//         });
-//   }
-// };
 
 const checkDir = (sourceDir, targetDir, cb) => {
   fs.readdir(sourceDir, (err, folders) => {
@@ -155,33 +136,5 @@ module.exports = {
   copyFile,
   createFolder,
   resizeImage,
-  // resizeImageLogo,
   checkDir
 };
-
-// const scanDir = (dir) => {
-//   return new Promise((resolve, reject) => {
-//     if (fs.existsSync(dir)) {
-//       fs.readdir(dir, (err, files) => {
-//         if (err) {
-//           reject(err);
-//         } else {
-//           resolve(files);
-//         }
-//       });
-//     }
-//   });
-// };
-//
-// const copyFiles = (files, target) => {
-//   let n = 0;
-//   files.forEach((file) => {
-//     createFolder(target + '/' + file, () => {
-//       console.log('create folder ' + file);
-//       n++;
-//       if (files.length === n) {
-//         cb();
-//       }
-//     });
-//   });
-// };
