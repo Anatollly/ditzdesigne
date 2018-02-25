@@ -75,8 +75,11 @@ app.route('/login')
     })
     .post((req, res) => {
       const {user, password} = req.body;
-      AdminLogin.signin(user, password);
-      if (AdminLogin.checkLogin()) {
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      console.log('ip1: ', req.headers['x-forwarded-for']);
+      console.log('ip2: ', req.connection.remoteAddress);
+      AdminLogin.signin(user, password, ip);
+      if (AdminLogin.checkLogin(ip)) {
         dataLogin.errorLogin = false;
         res.redirect('/admin');
       } else {
@@ -87,7 +90,8 @@ app.route('/login')
 
 app.route('/admin/:item?/:folder?/:upload?')
     .all((req, res, next) => {
-      if (!(AdminLogin.checkLogin())) {
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      if (!(AdminLogin.checkLogin(ip))) {
         res.redirect('/login');
       } else {
         if (data.errorData) {
