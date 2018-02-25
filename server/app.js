@@ -3,14 +3,9 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const multiparty = require('multiparty');
 const urlencode = require('urlencode');
-// const fs = require('fs');
 const rimraf = require('rimraf');
-// const rmdir = require('rmdir');
-// const {currentAlbumsData, currentImagesData} = require('./data');
 const {getPathsOfFiles, delFiles, delFilesMin, copyFile, createFolder, resizeImage, checkDir} = require('./util');
 const {Login} = require('./login');
-// const scanFolder = require('scan-folder');
-// const data = require('./data');
 
 const app = express();
 const AdminLogin = new Login();
@@ -18,6 +13,7 @@ const AdminLogin = new Login();
 const ALBUMMINDIR = 'photo/albums_min';
 const IMAGESDIR = 'photo/images';
 const MAXFILESUPLOAD = 20;
+// const PATH_BUILD_PHOTO = path.resolve() + '/build/photo/';
 let currentAlbumsData;
 let currentImagesData;
 let store;
@@ -25,22 +21,21 @@ let data;
 const dataLogin = {};
 let pathRoot = '';
 
+console.log('------', app.get('env'));
+
 if (app.get('env') === 'development') {
   pathRoot = 'build/';
 }
 
-console.log(pathRoot);
-console.log(process.env.NODE_ENV);
-console.log(__dirname);
-console.log(path.resolve());
+console.log('pathRoot: ', pathRoot);
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+console.log('__dirname: ', __dirname);
+console.log('path resolve: ', path.resolve());
+
 
 app.disable('x-powered-by');
 app.set('views', path.resolve(pathRoot + 'server/views'));
 app.set('view engine', 'pug');
-
-// Сейчас app.js запускается с директории ditzdesigne, а в продакшене будет с build.
-// сейчас app.js берет файлы в ditzdesigne/photo, а браузер - build/photo.
-// в продакшене будет одна директория. ниче не поменяется, но нужно держать в уме
 
 app.use(express.static(path.resolve(pathRoot)));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -80,8 +75,11 @@ app.route('/login')
     })
     .post((req, res) => {
       const {user, password} = req.body;
-      AdminLogin.signin(user, password);
-      if (AdminLogin.checkLogin()) {
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      console.log('ip1: ', req.headers['x-forwarded-for']);
+      console.log('ip2: ', req.connection.remoteAddress);
+      AdminLogin.signin(user, password, ip);
+      if (AdminLogin.checkLogin(ip)) {
         dataLogin.errorLogin = false;
         res.redirect('/admin');
       } else {
@@ -92,7 +90,8 @@ app.route('/login')
 
 app.route('/admin/:item?/:folder?/:upload?')
     .all((req, res, next) => {
-      if (!(AdminLogin.checkLogin())) {
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      if (!(AdminLogin.checkLogin(ip))) {
         res.redirect('/login');
       } else {
         if (data.errorData) {
@@ -127,7 +126,7 @@ app.route('/admin/:item?/:folder?/:upload?')
       }
       let urlToItem = '/admin/' + data.currentItem;
       let urlToFolder = urlToItem + '/' + data.currentFolder;
-      let pathToItem = '/photo/' + data.currentItem;
+      let pathToItem = '/build/photo/' + data.currentItem;
       let pathToFolder = pathToItem + '/' + data.currentFolder;
       let delData = Object.keys(req.body);
       const form = new multiparty.Form();
@@ -138,7 +137,7 @@ app.route('/admin/:item?/:folder?/:upload?')
             rebootData();
             res.redirect(urlToItem);
           } else {
-            createFolder(path.resolve() + '/' + ALBUMMINDIR + '/' + req.body.nameFolder, () => {
+            createFolder(path.resolve() + '/build/' + ALBUMMINDIR + '/' + req.body.nameFolder, () => {
               rebootData();
               res.redirect(urlToItem);
             });
@@ -186,7 +185,7 @@ app.route('/admin/:item?/:folder?/:upload?')
               files.uploadFile.forEach((name, i, arr) => {
                 let sourceFile = name.path;
                 let targetFile = path.resolve() + pathToFolder + '/' + name.originalFilename;
-                let targetFileForMinImg = path.resolve() + '/photo/albums_min/' + data.currentFolder + '/' + name.originalFilename;
+                let targetFileForMinImg = path.resolve() + '/build/photo/albums_min/' + data.currentFolder + '/' + name.originalFilename;
                 copyFile(sourceFile, targetFile, (error) => {
                   if (error) {
                     throw new Error(`An error occurred while copying file ${name.originalFilename}. Error: ${error}`);
@@ -217,51 +216,6 @@ app.get('/images', (req, res) => {
 
 console.log('PORT: ', process.env.PORT);
 
-app.listen(process.env.PORT || 80, () => {
+app.listen(process.env.PORT || 3501, () => {
   console.log('App listening on port 3501!');
 });
-
-
-// const handlePostRequest = () => {
-//   return new Promise((resolve, reject) => {
-//     if (req.url === urlToItem) {
-//       createFolder(path.resolve() + pathToItem + '/' + req.body.nameFolder);
-//     } else if (req.url === urlToFolder) {
-//       if (delData[0] === data.currentFolder) {
-//         rimraf.sync(pathToFolder.slice(1));
-//       } else {
-//         delFiles(delData);
-//       }
-//     } else if (req.url === urlToFolder + '/upload') {
-//       form.parse(req, (err, fields, files) => {
-//         if (err) {
-//           reject(`An error occurred while uploading files. Error: ${err}`);
-//         } else {
-//           let n = 1;
-//           files.uploadFile.forEach((name, i) => {
-//             let sourceFile = name.path;
-//             let targetFile = path.resolve() + pathToFolder + '/' + name.originalFilename;
-//             copyFile(sourceFile, targetFile, (error) => {
-//               if (error) {
-//                 reject(`An error occurred while copying file ${name.originalFilename}. Error: ${error}`);
-//               } else {
-//                 if (n === files.uploadFile.length) {
-//                   console.log(n + ' finish');
-//                   resolve();
-//                 } else {
-//                   console.log(n);
-//                   n++;
-//                 }
-//               }
-//             });
-//           });
-//         }
-//       });
-//     }
-//   });
-// };
-//
-// handlePostRequest()
-//     .then(rebootData)
-//     .then(() => res.redirect(urlToFolder))
-//     .catch();
