@@ -146,7 +146,7 @@ app.route('/admin/:item?/:folder?/:upload?')
           res.redirect(urlToFolder);
         } else if (delData[0] === data.currentFolder) {
           rimraf(pathToFolder.slice(1), () => {
-            rimraf(ALBUMMINDIR + '/' + data.currentFolder, () => {
+            rimraf('build/' + ALBUMMINDIR + '/' + data.currentFolder, () => {
               rebootData();
               res.redirect(urlToItem);
             });

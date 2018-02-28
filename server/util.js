@@ -107,7 +107,7 @@ const checkDir = (sourceDir, targetDir, cb) => {
 const delFiles = (files, cb) => {
   let n = 0;
   files.forEach((file) => {
-    fs.unlink(file, () => {
+    fs.unlink('build/' + file, () => {
       n++;
       if (files.length === n) {
         cb();
@@ -119,7 +119,7 @@ const delFiles = (files, cb) => {
 const delFilesMin = (files, cb) => {
   let n = 0;
   files.forEach((file) => {
-    let fileMin = file.substr(0, 11) + '_min' + file.substr(12);
+    let fileMin = 'build/' + file.substr(0, 11) + '_min' + file.substr(12);
     fs.unlink(fileMin, () => {
       n++;
       if (files.length === n) {
