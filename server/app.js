@@ -210,6 +210,6 @@ app.get('/images', (req, res) => {
   res.send(currentImagesData);
 });
 
-app.listen(process.env.PORT || 3501, () => {
+app.listen(process.env.PORT || 80, () => {
   console.log('App listening on port 80!');
 });
