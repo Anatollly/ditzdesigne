@@ -77,8 +77,8 @@ class ServicesPageView extends AbstractPageView {
           <div class="image"><img src="frontend/img/pic-2.png" alt=""></div>
         </div>
         <p class="paragraph paragraph-bottom">
-          Если у Вас есть идеи для текстиля для Вашего заведения,<br>
-          мы подберём решение и поможем создать их<br>
+          У Вас есть идеи для текстиля Вашего заведения?<br>
+          В DitzDesigne помогут подобрать решение и создать их<br>
           звоните, пишите Whatsapp +7 913 704-77-78 или<br>
           на почту
           <a href="mailto:ditzdesigne@mail.ru">
