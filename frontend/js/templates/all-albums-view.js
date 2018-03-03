@@ -21,7 +21,10 @@ class AllAlbumsView extends AbstractView {
         || this.arrData[i] === 'uniforms'
       )) {
         this.coversOfAlbums.push(this.data[this.arrData[i]][0]);
-        this.namesOfAlbums.push(`<div>${this.arrData[i]}</div>`);
+        const space = this.arrData[i].replace(/__/g, '&nbsp');
+        const quot = space.replace(/--/g, '<br>');
+        const newName = quot.replace(/99/g, '&quot');
+        this.namesOfAlbums.push(`<div>${newName}</div>`);
       }
     }
   }

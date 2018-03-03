@@ -7,8 +7,6 @@ class AlbumView extends ImageView {
     super(data);
     this.data = data;
     this.screenImage = document.querySelector('.screenImage');
-    // this.Slider = new ScreenSliderView(this.data);
-    // this.screenImage.appendChild(this.Slider.element);
   }
 
   getBigImagesData() {
@@ -18,10 +16,9 @@ class AlbumView extends ImageView {
   }
 
   bindHandlers() {
-    // this.Slider = new ScreenSliderView(this.getBigImagesData());
-    // this.screenImage.appendChild(this.Slider.element);
     this.element.addEventListener('click', (e) => {
       this.Slider = new ScreenSliderView(this.getBigImagesData());
+      // this.Slider = new ScreenSliderView(this.data);
       this.screenImage.appendChild(this.Slider.element);
       if (e.target.src) {
         this.data.forEach((img, i) => {
