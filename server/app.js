@@ -9,11 +9,10 @@ const {Login} = require('./login');
 
 const app = express();
 const AdminLogin = new Login();
-// const ALBUMSDIR = 'photo/albums';
 const ALBUMMINDIR = 'photo/albums_min';
 const IMAGESDIR = 'photo/images';
 const MAXFILESUPLOAD = 20;
-// const PATH_BUILD_PHOTO = path.resolve() + '/build/photo/';
+const PORT = 80;
 let currentAlbumsData;
 let currentImagesData;
 let store;
@@ -25,9 +24,6 @@ if (app.get('env') === 'development') {
   pathRoot = 'build/';
 }
 
-console.log('__dirname: ', __dirname);
-console.log('path resolve: ', path.resolve());
-
 
 app.disable('x-powered-by');
 app.set('views', path.resolve(pathRoot + 'server/views'));
@@ -35,7 +31,6 @@ app.set('view engine', 'pug');
 
 app.use(express.static(path.resolve(pathRoot)));
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json()); // ????
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(pathRoot + 'index.html'));
@@ -46,7 +41,6 @@ const getData = () => {
   currentImagesData = getPathsOfFiles(IMAGESDIR);
   store = Object.assign({}, {albums: currentAlbumsData}, {images: currentImagesData});
   data = {}; // object of data for render
-  console.log('getData');
 };
 
 const rebootData = () => {
@@ -72,8 +66,6 @@ app.route('/login')
     .post((req, res) => {
       const {user, password} = req.body;
       const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-      console.log('ip1: ', req.headers['x-forwarded-for']);
-      console.log('ip2: ', req.connection.remoteAddress);
       AdminLogin.signin(user, password, ip);
       if (AdminLogin.checkLogin(ip)) {
         dataLogin.errorLogin = false;
@@ -210,6 +202,6 @@ app.get('/images', (req, res) => {
   res.send(currentImagesData);
 });
 
-app.listen(process.env.PORT || 80, () => {
-  console.log('App listening on port 80!');
+app.listen(process.env.PORT || PORT, () => {
+  console.log(`App listening on port ${PORT}!`);
 });
