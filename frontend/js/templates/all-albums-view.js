@@ -9,6 +9,7 @@ class AllAlbumsView extends AbstractView {
     this.data = data;
     this.coversOfAlbums = [];
     this.namesOfAlbums = [];
+    this.albumData = [];
     this.namesOfAlbumsLabel = [];
     this.albumData = [];
     this.arrData = Object.keys(this.data);
