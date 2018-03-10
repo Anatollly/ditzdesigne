@@ -4,7 +4,7 @@ import {getImageS, getAlbumName} from '../util';
 
 class AllAlbumsView extends AbstractView {
 
-  constructor(data, albumBox) {
+  constructor(data, albumBox, albumName) {
     super();
     this.data = data;
     this.coversOfAlbums = [];
@@ -12,6 +12,7 @@ class AllAlbumsView extends AbstractView {
     this.namesOfAlbumsLabel = [];
     this.arrData = Object.keys(this.data);
     this.albumBox = albumBox;
+    this.albumName = albumName || '';
   }
 
   getDataOfAlbum() {
@@ -34,38 +35,39 @@ class AllAlbumsView extends AbstractView {
 
   getMarkup() {
     this.getDataOfAlbum();
-    return getImageS(this.coversOfAlbums, this.namesOfAlbums);
+    if (this.albumName) {
+      return getImageS([], []);
+    } else {
+      return getImageS(this.coversOfAlbums, this.namesOfAlbums);
+    }
+  }
+
+  showAlbum(albumName) {
+    this.arrData.forEach((name, i) => {
+      if (name === albumName) {
+        this.albumBox.innerHTML = `
+          <div class="row__caption">
+            <div class="name">${this.namesOfAlbumsLabel[i]}</div>
+          </div>
+        `;
+        this.albumBox.appendChild(albumView(this.data[name]));
+      }
+    });
   }
 
   bindHandlers() {
     this.element.addEventListener('click', (e) => {
       const {src, nextSibling} = e.target;
       if (src) {
-        this.arrData.forEach((name, i) => {
-          if (name === getAlbumName(e.target.src)) {
-            this.albumBox.innerHTML = `
-              <div class="row__caption">
-                <div class="name">${this.namesOfAlbumsLabel[i]}</div>
-              </div>
-            `;
-            this.albumBox.appendChild(albumView(this.data[name]));
-          }
-        });
+        this.showAlbum(getAlbumName(src));
       } else if (nextSibling && nextSibling.nodeName === 'IMG') {
-        this.arrData.forEach((name, i) => {
-          if (name === getAlbumName(nextSibling.src)) {
-            this.albumBox.innerHTML = `
-              <div class="row__caption">
-                <div class="name">${this.namesOfAlbumsLabel[i]}</div>
-              </div>
-            `;
-            this.albumBox.appendChild(albumView(this.data[name]));
-          }
-        });
+        this.showAlbum(getAlbumName(nextSibling.src));
       }
     });
+    if (this.albumName) {
+      this.showAlbum(this.albumName);
+    }
   }
-
 }
 
-export default (data, box) => new AllAlbumsView(data, box).element;
+export default (data, box, albumName) => new AllAlbumsView(data, box, albumName).element;
