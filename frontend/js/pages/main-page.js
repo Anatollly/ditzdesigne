@@ -55,6 +55,8 @@ class MainPageView extends AbstractPageView {
     const shares = this.element.querySelector('.row-3 .name');
     const slider = this.element.querySelector('.slider-onLeft');
     const sliderImages = this.element.querySelectorAll('.slider-onLeft li');
+    const mainHit = this.element.querySelector('.row-2 .row__image');
+    const mainStock = this.element.querySelector('.row-3 .row__image');
     bestseller.addEventListener('click', Application.showBestsellerPage);
     shares.addEventListener('click', Application.showSharesPage);
     this.rightPictures.addEventListener('click', (e) => {
@@ -65,13 +67,23 @@ class MainPageView extends AbstractPageView {
         sliderImages.forEach((li, i) => {
           if (li.classList.contains('animate')) {
             try {
-              Application.showPortfolioPage(getPageName(AppData.images.mainSlider[i]));
+              if (Application.hasOwnProperty(`show${getPageName(AppData.images.mainSlider[i])}Page`)) {
+                Application[`show${getPageName(AppData.images.mainSlider[i])}Page`]();
+              } else {
+                Application.showPortfolioPage(getPageName(AppData.images.mainSlider[i]));
+              }
             } catch (err) {
               Application.showErrorPage();
             }
           }
         });
       }
+    });
+    mainHit.addEventListener('click', (e) => {
+      Application.showPortfolioPage(getPageName(e.target.src).split('_')[1]);
+    });
+    mainStock.addEventListener('click', (e) => {
+      Application.showPortfolioPage(getPageName(e.target.src).split('_')[1]);
     });
   }
 

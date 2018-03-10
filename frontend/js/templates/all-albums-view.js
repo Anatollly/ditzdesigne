@@ -9,6 +9,7 @@ class AllAlbumsView extends AbstractView {
     this.data = data;
     this.coversOfAlbums = [];
     this.namesOfAlbums = [];
+    this.albumData = [];
     this.namesOfAlbumsLabel = [];
     this.arrData = Object.keys(this.data);
     this.albumBox = albumBox;
@@ -22,6 +23,7 @@ class AllAlbumsView extends AbstractView {
         || this.arrData[i] === 'textileForRest'
         || this.arrData[i] === 'uniforms'
       )) {
+        this.albumData.push(this.arrData[i]);
         this.coversOfAlbums.push(this.data[this.arrData[i]][0]);
         const space = this.arrData[i].replace(/__/g, '&nbsp');
         const quot = space.replace(/99/g, '&quot');
@@ -43,7 +45,7 @@ class AllAlbumsView extends AbstractView {
   }
 
   showAlbum(albumName) {
-    this.arrData.forEach((name, i) => {
+    this.albumData.forEach((name, i) => {
       if (name === albumName) {
         this.albumBox.innerHTML = `
           <div class="row__caption">
