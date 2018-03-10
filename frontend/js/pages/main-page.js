@@ -80,10 +80,10 @@ class MainPageView extends AbstractPageView {
       }
     });
     mainHit.addEventListener('click', (e) => {
-      Application.showPortfolioPage(getPageName(e.target.src).split('_')[1]);
+      Application.showPortfolioPage(getPageName(e.target.src).split('___')[1]);
     });
     mainStock.addEventListener('click', (e) => {
-      Application.showPortfolioPage(getPageName(e.target.src).split('_')[1]);
+      Application.showPortfolioPage(getPageName(e.target.src).split('___')[1]);
     });
   }
 
