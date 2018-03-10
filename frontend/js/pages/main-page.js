@@ -65,7 +65,7 @@ class MainPageView extends AbstractPageView {
         sliderImages.forEach((li, i) => {
           if (li.classList.contains('animate')) {
             try {
-              Application['show' + AppData.images.mainSlider[i].split('.')[0].split('-')[1] + 'Page']();
+              Application.showPortfolioPage(getPageName(AppData.images.mainSlider[i]));
             } catch (err) {
               Application.showErrorPage();
             }

@@ -4,6 +4,11 @@ import {AppData} from '../data/data';
 
 class PortfolioPageView extends AbstractPageView {
 
+  constructor(albumName) {
+    super();
+    this.albumName = albumName || '';
+  }
+
   getMarkup() {
     return `<div class="row row-4">
       <div class="row__caption">
@@ -19,8 +24,7 @@ class PortfolioPageView extends AbstractPageView {
     const backButton = this.element.querySelector('.row-4 .row__caption .name');
     const albumBox = this.element.querySelector('.row-4 .row__image');
     const screenImage = this.element.querySelector('.screenImage');
-
-    albumBox.appendChild(allAlbumsView(AppData.albums, albumBox));
+    albumBox.appendChild(allAlbumsView(AppData.albums, albumBox, this.albumName));
     backButton.addEventListener('click', () => {
       albumBox.innerHTML = '';
       albumBox.appendChild(allAlbumsView(AppData.albums, albumBox));
@@ -33,4 +37,4 @@ class PortfolioPageView extends AbstractPageView {
 
 }
 
-export default () => new PortfolioPageView().element;
+export default (albumName) => new PortfolioPageView(albumName).element;

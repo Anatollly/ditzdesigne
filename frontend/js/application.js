@@ -26,8 +26,8 @@ export default class Application {
     // hashController().hash = '/aboutUs';
   }
 
-  static showPortfolioPage() {
-    displayElement(portfolioPageView());
+  static showPortfolioPage(albumName) {
+    displayElement(portfolioPageView(albumName));
     // hashController().hash = '/portfolio';
   }
 
