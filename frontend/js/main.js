@@ -11,6 +11,7 @@ const mainMenuItems = document.querySelectorAll('.main-menu li');
 
 logoMain.addEventListener('click', () => {
   goToPage(pages.main);
+  location.reload();
 });
 
 mainMenuItems.forEach((item) => {
