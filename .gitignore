@@ -2,8 +2,6 @@ build
 node_modules
 copy
 test
-<<<<<<< HEAD
+.DS_Store
 package-lock
-=======
 photo
->>>>>>> 6a899c32872d50ec8c6624e79f5e417ed941e2c6

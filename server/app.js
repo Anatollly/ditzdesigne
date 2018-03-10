@@ -12,7 +12,7 @@ const AdminLogin = new Login();
 const ALBUMMINDIR = 'photo/albums_min';
 const IMAGESDIR = 'photo/images';
 const MAXFILESUPLOAD = 20;
-const PORT = 80;
+const PORT = 3000;
 let currentAlbumsData;
 let currentImagesData;
 let store;
