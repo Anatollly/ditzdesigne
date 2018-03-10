@@ -9,6 +9,7 @@ class AllAlbumsView extends AbstractView {
     this.data = data;
     this.coversOfAlbums = [];
     this.namesOfAlbums = [];
+    this.namesOfAlbumsLabel = [];
     this.arrData = Object.keys(this.data);
     this.albumBox = albumBox;
   }
@@ -22,9 +23,11 @@ class AllAlbumsView extends AbstractView {
       )) {
         this.coversOfAlbums.push(this.data[this.arrData[i]][0]);
         const space = this.arrData[i].replace(/__/g, '&nbsp');
-        const quot = space.replace(/--/g, '<br>');
-        const newName = quot.replace(/99/g, '&quot');
+        const quot = space.replace(/99/g, '&quot');
+        const newName = quot.replace(/--/g, '<br>');
+        const newNameLabel = quot.replace(/--/g, '&nbsp');
         this.namesOfAlbums.push(`<div>${newName}</div>`);
+        this.namesOfAlbumsLabel.push(`<div>${newNameLabel}</div>`);
       }
     }
   }
@@ -36,10 +39,26 @@ class AllAlbumsView extends AbstractView {
 
   bindHandlers() {
     this.element.addEventListener('click', (e) => {
-      if (e.target.src) {
+      const {src, nextSibling} = e.target;
+      if (src) {
         this.arrData.forEach((name, i) => {
           if (name === getAlbumName(e.target.src)) {
-            this.albumBox.innerHTML = '';
+            this.albumBox.innerHTML = `
+              <div class="row__caption">
+                <div class="name">${this.namesOfAlbumsLabel[i]}</div>
+              </div>
+            `;
+            this.albumBox.appendChild(albumView(this.data[name]));
+          }
+        });
+      } else if (nextSibling && nextSibling.nodeName === 'IMG') {
+        this.arrData.forEach((name, i) => {
+          if (name === getAlbumName(nextSibling.src)) {
+            this.albumBox.innerHTML = `
+              <div class="row__caption">
+                <div class="name">${this.namesOfAlbumsLabel[i]}</div>
+              </div>
+            `;
             this.albumBox.appendChild(albumView(this.data[name]));
           }
         });
