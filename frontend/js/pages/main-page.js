@@ -57,8 +57,8 @@ class MainPageView extends AbstractPageView {
     const sliderImages = this.element.querySelectorAll('.slider-onLeft li');
     const mainHit = this.element.querySelector('.row-2 .row__image');
     const mainStock = this.element.querySelector('.row-3 .row__image');
-    bestseller.addEventListener('click', Application.showBestsellerPage);
-    shares.addEventListener('click', Application.showSharesPage);
+    // bestseller.addEventListener('click', Application.showBestsellerPage);
+    // shares.addEventListener('click', Application.showSharesPage);
     this.rightPictures.addEventListener('click', (e) => {
       goToPage(pages[getPageName(e.target.src)]);
     });
